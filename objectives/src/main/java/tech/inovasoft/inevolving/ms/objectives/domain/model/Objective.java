@@ -28,8 +28,7 @@ public class Objective {
     public Objective(RequestCreateObjectiveDTO requestCreateObjectiveDTO) {
         this.nameObjective = requestCreateObjectiveDTO.nameObjective();
         this.descriptionObjective = requestCreateObjectiveDTO.descriptionObjective();
-        this.statusObjective = requestCreateObjectiveDTO.statusObjective();
-        this.completionDate = Date.valueOf(requestCreateObjectiveDTO.completionDate());
+        this.statusObjective = Status.TODO;
         this.idUser = requestCreateObjectiveDTO.idUser();
     }
 }

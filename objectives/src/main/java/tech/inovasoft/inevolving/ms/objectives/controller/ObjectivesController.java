@@ -7,6 +7,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.request.RequestCreateObjectiveDTO;
 
+import java.time.LocalDate;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 @Tag(name = "Objectives | Objetivos", description = "Manager of Objectives | Gerenciador dos end-points de Objetivos")
@@ -36,6 +38,15 @@ public class ObjectivesController {
         return CompletableFuture.completedFuture(ResponseEntity.ok().build());
     }
 
-
+    @Operation(
+            summary = "Complete Objective. | Concluir Objetivo.",
+            description = "Returns confirmation that the objective has been completed. | Retorna a confirmação de que o objetivo foi concluido."
+    )
+    @Async("asyncExecutor")
+    @PatchMapping("/{idObjective}/{conclusionDate}")
+    public CompletableFuture<ResponseEntity> completeObjective(@PathVariable UUID idObjective, @PathVariable LocalDate conclusionDate) {
+        // TODO: Criar Método do service
+        return CompletableFuture.completedFuture(ResponseEntity.ok().build());
+    }
 
 }
