@@ -77,7 +77,7 @@ public class ObjectivesController {
             description = "Returns a list of all the user's uncompleted goals. | Retorna uma lista com todos os objetivos não concluídos do usuário."
     )
     @Async("asyncExecutor")
-    @GetMapping("/user/{idUser}")
+    @GetMapping("/status/todo/user/{idUser}")
     public CompletableFuture<ResponseEntity> getObjectivesByIdUserToDo(@PathVariable UUID idUser) {
         return CompletableFuture.completedFuture(ResponseEntity.ok(objectivesService.getObjectivesByIdUserStatus(idUser, Status.TODO)));
     }
@@ -87,7 +87,7 @@ public class ObjectivesController {
             description = "Returns a list of all completed goals for the user. | Retorna uma lista com todos os objetivos concluídos do usuário."
     )
     @Async("asyncExecutor")
-    @GetMapping("/user/{idUser}")
+    @GetMapping("/status/done/user/{idUser}")
     public CompletableFuture<ResponseEntity> getObjectivesByIdUserDone(@PathVariable UUID idUser) {
         return CompletableFuture.completedFuture(ResponseEntity.ok(objectivesService.getObjectivesByIdUserStatus(idUser, Status.DONE)));
     }
