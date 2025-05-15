@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.request.RequestCreateObjectiveDTO;
+import tech.inovasoft.inevolving.ms.objectives.domain.model.Status;
 import tech.inovasoft.inevolving.ms.objectives.service.ObjectivesService;
 
 import java.time.LocalDate;
@@ -49,6 +50,46 @@ public class ObjectivesController {
     @PatchMapping("/{idObjective}/{conclusionDate}")
     public CompletableFuture<ResponseEntity> completeObjective(@PathVariable UUID idObjective, @PathVariable LocalDate conclusionDate) {
         return CompletableFuture.completedFuture(ResponseEntity.ok(objectivesService.completeObjective(idObjective, conclusionDate)));
+    }
+
+    @Operation(
+            summary = "Get target by id | Pegar objetivo por id.",
+            description = "Returns the found target. | Retorna o objetivo encontrado."
+    )
+    @Async("asyncExecutor")
+    @GetMapping("/{idObjective}")
+    public CompletableFuture<ResponseEntity> getObjectiveById(@PathVariable UUID idObjective) {
+        return CompletableFuture.completedFuture(ResponseEntity.ok(objectivesService.getObjectiveById(idObjective)));
+    }
+
+    @Operation(
+            summary = "Get all user objectives. | Pegar todos os objetivos do usuário.",
+            description = "Returns a list of all the user's goals. | Retorna uma lista com todos os objetivos do usuário."
+    )
+    @Async("asyncExecutor")
+    @GetMapping("/user/{idUser}")
+    public CompletableFuture<ResponseEntity> getObjectivesByIdUser(@PathVariable UUID idUser) {
+        return CompletableFuture.completedFuture(ResponseEntity.ok(objectivesService.getObjectivesByIdUser(idUser)));
+    }
+
+    @Operation(
+            summary = "Get all user goals that have not yet been completed. | Pegar todos os objetivos do usuário que ainda não foram concluídos.",
+            description = "Returns a list of all the user's uncompleted goals. | Retorna uma lista com todos os objetivos não concluídos do usuário."
+    )
+    @Async("asyncExecutor")
+    @GetMapping("/user/{idUser}")
+    public CompletableFuture<ResponseEntity> getObjectivesByIdUserToDo(@PathVariable UUID idUser) {
+        return CompletableFuture.completedFuture(ResponseEntity.ok(objectivesService.getObjectivesByIdUserStatus(idUser, Status.TODO)));
+    }
+
+    @Operation(
+            summary = "Get all user goals that have been completed. | Pegar todos os objetivos do usuário que foram concluídos.",
+            description = "Returns a list of all completed goals for the user. | Retorna uma lista com todos os objetivos concluídos do usuário."
+    )
+    @Async("asyncExecutor")
+    @GetMapping("/user/{idUser}")
+    public CompletableFuture<ResponseEntity> getObjectivesByIdUserDone(@PathVariable UUID idUser) {
+        return CompletableFuture.completedFuture(ResponseEntity.ok(objectivesService.getObjectivesByIdUserStatus(idUser, Status.DONE)));
     }
 
 }
