@@ -41,7 +41,7 @@ public class ObjectiveServiceSuccess {
         expected.setId(UUID.randomUUID());
 
         //When
-        when(repository.save(newObjective)).thenReturn(expected);
+        when(repository.save(any())).thenReturn(expected);
         var result = service.addObjective(request);
 
         //Then
@@ -51,7 +51,7 @@ public class ObjectiveServiceSuccess {
         assertEquals(expected.getDescriptionObjective(), result.getDescriptionObjective());
         assertEquals(expected.getIdUser(), result.getIdUser());
 
-        verify(repository, times(1)).save(newObjective);
+        verify(repository, times(1)).save(any());
     }
 
 

@@ -19,9 +19,9 @@ public class ObjectivesService {
     private ObjectiveRepository objectiveRepository;
 
     public Objective addObjective(RequestCreateObjectiveDTO dto) {
-        //TODO: Desenvolver método para o teste passar.
+        var newObjective = new Objective(dto);
+        return objectiveRepository.save(newObjective);
         //TODO: Refatorar código e criar documentação.
-        return null;
     }
 
     public Objective updateObjective(UUID idObjective, RequestCreateObjectiveDTO dto) {
