@@ -18,10 +18,14 @@ public class ObjectivesService {
     @Autowired
     private ObjectiveRepository objectiveRepository;
 
+    /**
+     * @description - Add a new objective | Adiciona um novo objetivo
+     * @param dto - RequestCreateObjectiveDTO (Data Transfer Object) - Objeto de transferência de dados
+     * @return  - Returns the new registered objective. | Retorna o novo objetivo cadastrado.
+     */
     public Objective addObjective(RequestCreateObjectiveDTO dto) {
         var newObjective = new Objective(dto);
         return objectiveRepository.save(newObjective);
-        //TODO: Refatorar código e criar documentação.
     }
 
     public Objective updateObjective(UUID idObjective, RequestCreateObjectiveDTO dto) {
