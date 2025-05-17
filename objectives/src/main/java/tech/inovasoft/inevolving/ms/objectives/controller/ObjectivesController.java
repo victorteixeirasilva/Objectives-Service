@@ -38,9 +38,9 @@ public class ObjectivesController {
             description = "Returns the updated objective. | Retorna o objetivo atualizado."
     )
     @Async("asyncExecutor")
-    @PutMapping("/{idObjective}")
-    public CompletableFuture<ResponseEntity> update(@PathVariable UUID idObjective, @RequestBody RequestCreateObjectiveDTO dto) {
-        return CompletableFuture.completedFuture(ResponseEntity.ok(objectivesService.updateObjective(idObjective, dto)));
+    @PutMapping("/{idObjective}/{idUser}")
+    public CompletableFuture<ResponseEntity> update(@PathVariable UUID idObjective, @PathVariable UUID idUser, @RequestBody RequestCreateObjectiveDTO dto) {
+        return CompletableFuture.completedFuture(ResponseEntity.ok(objectivesService.updateObjective(idObjective, dto, idUser)));
     }
 
     @Operation(
@@ -48,9 +48,9 @@ public class ObjectivesController {
             description = "Returns confirmation that the objective has been completed. | Retorna a confirmação de que o objetivo foi concluido."
     )
     @Async("asyncExecutor")
-    @PatchMapping("/{idObjective}/{conclusionDate}")
-    public CompletableFuture<ResponseEntity> completeObjective(@PathVariable UUID idObjective, @PathVariable LocalDate conclusionDate) {
-        return CompletableFuture.completedFuture(ResponseEntity.ok(objectivesService.completeObjective(idObjective, conclusionDate)));
+    @PatchMapping("/{idObjective}/{conclusionDate}/{idUser}")
+    public CompletableFuture<ResponseEntity> completeObjective(@PathVariable UUID idObjective, @PathVariable LocalDate conclusionDate, @PathVariable UUID idUser) {
+        return CompletableFuture.completedFuture(ResponseEntity.ok(objectivesService.completeObjective(idObjective, conclusionDate, idUser)));
     }
 
     @Operation(

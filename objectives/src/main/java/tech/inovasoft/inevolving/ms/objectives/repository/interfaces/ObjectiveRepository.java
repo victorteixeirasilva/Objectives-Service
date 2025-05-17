@@ -9,4 +9,6 @@ public interface ObjectiveRepository {
     Objective save(Objective newObjective);
 
     Objective findById(UUID idObjective);
+
+    Objective findByIdAndIdUser(UUID idObjective, UUID idUser);
 }

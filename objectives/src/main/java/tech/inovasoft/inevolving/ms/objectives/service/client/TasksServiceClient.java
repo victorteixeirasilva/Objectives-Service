@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 public interface TasksServiceClient {
 
     @DeleteMapping("/lock/{completionDate}/{idUser}/{idObjective}")
-    public CompletableFuture<ResponseEntity> lockTaskByObjective(
+    public ResponseEntity lockTaskByObjective(
             @PathVariable Date completionDate,
             @PathVariable UUID idUser,
             @PathVariable UUID idObjective

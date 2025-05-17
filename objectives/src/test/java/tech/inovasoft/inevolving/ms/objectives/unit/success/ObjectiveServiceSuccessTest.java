@@ -5,11 +5,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.request.RequestCreateObjectiveDTO;
+import tech.inovasoft.inevolving.ms.objectives.domain.dto.response.ResponseMessageDTO;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Objective;
 import tech.inovasoft.inevolving.ms.objectives.repository.interfaces.ObjectiveRepository;
 import tech.inovasoft.inevolving.ms.objectives.service.ObjectivesService;
+import tech.inovasoft.inevolving.ms.objectives.service.client.TasksServiceClient;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,6 +26,9 @@ public class ObjectiveServiceSuccessTest {
 
     @Mock
     private ObjectiveRepository repository;
+
+    @Mock
+    private TasksServiceClient tasksServiceClient;
 
     @InjectMocks
     private ObjectivesService service;
@@ -34,9 +42,7 @@ public class ObjectiveServiceSuccessTest {
                 UUID.randomUUID()
         );
 
-        Objective newObjective = new Objective(request);
-
-        Objective expected = newObjective;
+        Objective expected = new Objective(request);
         expected.setId(UUID.randomUUID());
 
         //When
@@ -75,9 +81,9 @@ public class ObjectiveServiceSuccessTest {
         newObjective.setIdUser(request.idUser());
 
         //When
-        when(repository.findById(idObjective)).thenReturn(oldObjective);
+        when(repository.findByIdAndIdUser(idObjective, request.idUser())).thenReturn(oldObjective);
         when(repository.save(any())).thenReturn(newObjective);
-        var result = service.updateObjective(idObjective, request);
+        var result = service.updateObjective(idObjective, request, request.idUser());
 
         //Then
         assertNotNull(result);
@@ -86,8 +92,36 @@ public class ObjectiveServiceSuccessTest {
         assertEquals(newObjective.getDescriptionObjective(), result.getDescriptionObjective());
         assertEquals(newObjective.getIdUser(), result.getIdUser());
 
-        verify(repository, times(1)).findById(idObjective);
+        verify(repository, times(1)).findByIdAndIdUser(idObjective, request.idUser());
         verify(repository, times(1)).save(any());
+    }
+
+    @Test
+    public void completeObjective(){
+        //Given
+        var idObjective = UUID.randomUUID();
+        LocalDate date = LocalDate.now();
+        var idUser = UUID.randomUUID();
+
+        var objective = new Objective();
+        objective.setId(idObjective);
+        objective.setNameObjective("Objetivo");
+        objective.setDescriptionObjective("Objetivo");
+        objective.setIdUser(idUser);
+
+        //When
+        when(repository.findByIdAndIdUser(idObjective, idUser)).thenReturn(objective);
+        when(tasksServiceClient.lockTaskByObjective(Date.valueOf(date), idUser, idObjective))
+                .thenReturn(ResponseEntity.ok().build());
+        ResponseMessageDTO result = service.completeObjective(idObjective, date, idUser);
+
+        //Then
+        assertNotNull(result);
+        assertEquals("Objective successfully completed", result.message());
+
+        verify(repository, times(1)).findByIdAndIdUser(idObjective, idUser);
+        verify(tasksServiceClient, times(1)).lockTaskByObjective(Date.valueOf(date), idUser, idObjective);
+
     }
 
 

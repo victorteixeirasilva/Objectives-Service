@@ -33,8 +33,8 @@ public class ObjectivesService {
      * @param dto - RequestCreateObjectiveDTO (Data Transfer Object) - Objeto de transferência de dados
      * @return - Returns the updated objective | Retorna o objetivo atualizado
      */
-    public Objective updateObjective(UUID idObjective, RequestCreateObjectiveDTO dto) {
-        var oldObjective = objectiveRepository.findById(idObjective);
+    public Objective updateObjective(UUID idObjective, RequestCreateObjectiveDTO dto, UUID idUser) {
+        var oldObjective = objectiveRepository.findByIdAndIdUser(idObjective, idUser);
 
         oldObjective.setNameObjective(dto.nameObjective());
         oldObjective.setDescriptionObjective(dto.descriptionObjective());
@@ -42,8 +42,7 @@ public class ObjectivesService {
         return objectiveRepository.save(oldObjective);
     }
 
-    public ResponseMessageDTO completeObjective(UUID idObjective, LocalDate conclusionDate) {
-        //TODO: Criar Teste Que Falhe
+    public ResponseMessageDTO completeObjective(UUID idObjective, LocalDate conclusionDate, UUID idUser) {
         //TODO: Desenvolver método para o teste passar.
         //TODO: Refatorar código e criar documentação.
         return null;
