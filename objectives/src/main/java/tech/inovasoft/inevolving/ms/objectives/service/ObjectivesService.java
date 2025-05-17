@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.request.RequestCreateObjectiveDTO;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.response.ResponseMessageDTO;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Objective;
-import tech.inovasoft.inevolving.ms.objectives.repository.interfaces.ObjectiveJpaRepository;
 import tech.inovasoft.inevolving.ms.objectives.repository.interfaces.ObjectiveRepository;
 
 import java.time.LocalDate;
@@ -29,7 +28,6 @@ public class ObjectivesService {
     }
 
     public Objective updateObjective(UUID idObjective, RequestCreateObjectiveDTO dto) {
-        //TODO: Criar Teste Que Falhe
         //TODO: Desenvolver método para o teste passar.
         //TODO: Refatorar código e criar documentação.
         return null;

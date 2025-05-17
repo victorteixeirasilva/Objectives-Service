@@ -3,10 +3,13 @@ package tech.inovasoft.inevolving.ms.objectives.repository.implementation;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Objective;
 import tech.inovasoft.inevolving.ms.objectives.repository.interfaces.ObjectiveRepository;
 
-public class ObjectiveRepositoryImplementation implements ObjectiveRepository {
+//public class ObjectiveRepositoryImplementation implements ObjectiveRepository {
+public class ObjectiveRepositoryImplementation {
 
-    @Override
-    public Objective save(Objective newObjective) {
-        return null;
-    }
+    //TODO implement methods
+
+//    @Override
+//    public Objective save(Objective newObjective) {
+//        return null;
+//    }
 }
