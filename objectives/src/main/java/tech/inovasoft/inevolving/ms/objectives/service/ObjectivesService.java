@@ -28,9 +28,13 @@ public class ObjectivesService {
     }
 
     public Objective updateObjective(UUID idObjective, RequestCreateObjectiveDTO dto) {
-        //TODO: Desenvolver método para o teste passar.
+        var oldObjective = objectiveRepository.findById(idObjective);
+
+        oldObjective.setNameObjective(dto.nameObjective());
+        oldObjective.setDescriptionObjective(dto.descriptionObjective());
+
+        return objectiveRepository.save(oldObjective);
         //TODO: Refatorar código e criar documentação.
-        return null;
     }
 
     public ResponseMessageDTO completeObjective(UUID idObjective, LocalDate conclusionDate) {
