@@ -29,8 +29,11 @@ public class ObjectivesController {
     )
     @Async("asyncExecutor")
     @PostMapping
-    public CompletableFuture<ResponseEntity> add(@RequestBody RequestCreateObjectiveDTO dto) {
-        return CompletableFuture.completedFuture(ResponseEntity.ok(objectivesService.addObjective(dto)));
+    public CompletableFuture<ResponseEntity> add(
+            @RequestBody RequestCreateObjectiveDTO dto
+    ) {
+        return CompletableFuture.completedFuture(
+                ResponseEntity.ok(objectivesService.addObjective(dto)));
     }
 
     @Operation(
@@ -39,8 +42,14 @@ public class ObjectivesController {
     )
     @Async("asyncExecutor")
     @PutMapping("/{idObjective}/{idUser}")
-    public CompletableFuture<ResponseEntity> update(@PathVariable UUID idObjective, @PathVariable UUID idUser, @RequestBody RequestCreateObjectiveDTO dto) {
-        return CompletableFuture.completedFuture(ResponseEntity.ok(objectivesService.updateObjective(idObjective, dto, idUser)));
+    public CompletableFuture<ResponseEntity> update(
+            @PathVariable UUID idObjective,
+            @PathVariable UUID idUser,
+            @RequestBody RequestCreateObjectiveDTO dto
+    ) {
+        return CompletableFuture.completedFuture(
+                ResponseEntity.ok(
+                        objectivesService.updateObjective(idObjective, dto, idUser)));
     }
 
     @Operation(
@@ -49,8 +58,14 @@ public class ObjectivesController {
     )
     @Async("asyncExecutor")
     @PatchMapping("/{idObjective}/{conclusionDate}/{idUser}")
-    public CompletableFuture<ResponseEntity> completeObjective(@PathVariable UUID idObjective, @PathVariable LocalDate conclusionDate, @PathVariable UUID idUser) {
-        return CompletableFuture.completedFuture(ResponseEntity.ok(objectivesService.completeObjective(idObjective, conclusionDate, idUser)));
+    public CompletableFuture<ResponseEntity> completeObjective(
+            @PathVariable UUID idObjective,
+            @PathVariable LocalDate conclusionDate,
+            @PathVariable UUID idUser
+    ) {
+        return CompletableFuture.completedFuture(
+                ResponseEntity.ok(
+                        objectivesService.completeObjective(idObjective, conclusionDate, idUser)));
     }
 
     @Operation(
@@ -58,9 +73,14 @@ public class ObjectivesController {
             description = "Returns the found target. | Retorna o objetivo encontrado."
     )
     @Async("asyncExecutor")
-    @GetMapping("/{idObjective}")
-    public CompletableFuture<ResponseEntity> getObjectiveById(@PathVariable UUID idObjective) {
-        return CompletableFuture.completedFuture(ResponseEntity.ok(objectivesService.getObjectiveById(idObjective)));
+    @GetMapping("/{idObjective}/{idUser}")
+    public CompletableFuture<ResponseEntity> getObjectiveById(
+            @PathVariable UUID idObjective,
+            @PathVariable UUID idUser
+    ) {
+        return CompletableFuture.completedFuture(
+                ResponseEntity.ok(
+                        objectivesService.getObjectiveById(idObjective, idUser)));
     }
 
     @Operation(
@@ -69,8 +89,12 @@ public class ObjectivesController {
     )
     @Async("asyncExecutor")
     @GetMapping("/user/{idUser}")
-    public CompletableFuture<ResponseEntity> getObjectivesByIdUser(@PathVariable UUID idUser) {
-        return CompletableFuture.completedFuture(ResponseEntity.ok(objectivesService.getObjectivesByIdUser(idUser)));
+    public CompletableFuture<ResponseEntity> getObjectivesByIdUser(
+            @PathVariable UUID idUser
+    ) {
+        return CompletableFuture.completedFuture(
+                ResponseEntity.ok(
+                        objectivesService.getObjectivesByIdUser(idUser)));
     }
 
     @Operation(
@@ -79,8 +103,12 @@ public class ObjectivesController {
     )
     @Async("asyncExecutor")
     @GetMapping("/status/todo/user/{idUser}")
-    public CompletableFuture<ResponseEntity> getObjectivesByIdUserToDo(@PathVariable UUID idUser) {
-        return CompletableFuture.completedFuture(ResponseEntity.ok(objectivesService.getObjectivesByIdUserStatus(idUser, Status.TODO)));
+    public CompletableFuture<ResponseEntity> getObjectivesByIdUserToDo(
+            @PathVariable UUID idUser
+    ) {
+        return CompletableFuture.completedFuture(
+                ResponseEntity.ok(
+                        objectivesService.getObjectivesByIdUserStatus(idUser, Status.TODO)));
     }
 
     @Operation(
@@ -89,8 +117,12 @@ public class ObjectivesController {
     )
     @Async("asyncExecutor")
     @GetMapping("/status/done/user/{idUser}")
-    public CompletableFuture<ResponseEntity> getObjectivesByIdUserDone(@PathVariable UUID idUser) {
-        return CompletableFuture.completedFuture(ResponseEntity.ok(objectivesService.getObjectivesByIdUserStatus(idUser, Status.DONE)));
+    public CompletableFuture<ResponseEntity> getObjectivesByIdUserDone(
+            @PathVariable UUID idUser
+    ) {
+        return CompletableFuture.completedFuture(
+                ResponseEntity.ok(
+                        objectivesService.getObjectivesByIdUserStatus(idUser, Status.DONE)));
     }
 
 }

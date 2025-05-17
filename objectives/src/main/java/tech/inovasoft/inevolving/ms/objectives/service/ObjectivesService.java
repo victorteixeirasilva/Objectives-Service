@@ -48,7 +48,7 @@ public class ObjectivesService {
         return null;
     }
 
-    public Objective getObjectiveById(UUID idObjective) {
+    public Objective getObjectiveById(UUID idObjective, UUID idUser) {
         //TODO: Criar Teste Que Falhe
         //TODO: Desenvolver método para o teste passar.
         //TODO: Refatorar código e criar documentação.
