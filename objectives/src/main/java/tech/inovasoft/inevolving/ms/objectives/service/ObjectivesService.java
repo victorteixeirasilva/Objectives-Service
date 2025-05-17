@@ -27,6 +27,12 @@ public class ObjectivesService {
         return objectiveRepository.save(newObjective);
     }
 
+    /**
+     * @description - Update objective | Atualiza um objetivo
+     * @param idObjective - Id of objective to be updated | Id do objetivo a ser atualizado
+     * @param dto - RequestCreateObjectiveDTO (Data Transfer Object) - Objeto de transferência de dados
+     * @return - Returns the updated objective | Retorna o objetivo atualizado
+     */
     public Objective updateObjective(UUID idObjective, RequestCreateObjectiveDTO dto) {
         var oldObjective = objectiveRepository.findById(idObjective);
 
@@ -34,7 +40,6 @@ public class ObjectivesService {
         oldObjective.setDescriptionObjective(dto.descriptionObjective());
 
         return objectiveRepository.save(oldObjective);
-        //TODO: Refatorar código e criar documentação.
     }
 
     public ResponseMessageDTO completeObjective(UUID idObjective, LocalDate conclusionDate) {
