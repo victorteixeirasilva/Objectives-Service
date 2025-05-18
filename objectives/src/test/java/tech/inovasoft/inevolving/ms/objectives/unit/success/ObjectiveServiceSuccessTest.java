@@ -10,12 +10,15 @@ import tech.inovasoft.inevolving.ms.objectives.domain.dto.request.RequestCreateO
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.response.ResponseMessageDTO;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.InternalErrorException;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Objective;
+import tech.inovasoft.inevolving.ms.objectives.domain.model.Status;
 import tech.inovasoft.inevolving.ms.objectives.repository.interfaces.ObjectiveRepository;
 import tech.inovasoft.inevolving.ms.objectives.service.ObjectivesService;
 import tech.inovasoft.inevolving.ms.objectives.service.client.TasksServiceClient;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -149,6 +152,33 @@ public class ObjectiveServiceSuccessTest {
         assertEquals(objective.getIdUser(), result.getIdUser());
 
         verify(repository, times(1)).findByIdAndIdUser(idObjective, idUser);
+    }
+
+    @Test
+    public void getObjectivesByIdUser() {
+        //Given
+        var idUser = UUID.randomUUID();
+        List<Objective> objectives = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            objectives.add(new Objective(
+                    UUID.randomUUID(),
+                    "Objetivo " + i,
+                    "Descrição " + i,
+                    Status.TODO,
+                    null,
+                    idUser
+            ));
+        }
+
+        //When
+        when(repository.findAllByIdUser(idUser)).thenReturn(objectives);
+        var result = service.getObjectivesByIdUser(idUser);
+
+        //Then
+        assertNotNull(result);
+        assertEquals(objectives.size(), result.size());
+
+        verify(repository, times(1)).findAllByIdUser(idUser);
     }
 
 
