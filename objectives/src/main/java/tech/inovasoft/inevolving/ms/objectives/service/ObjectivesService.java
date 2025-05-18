@@ -74,7 +74,6 @@ public class ObjectivesService {
             return new ResponseMessageDTO("Objective successfully completed");
 
         } {
-            //TODO: Criar Teste Da Falha
             throw new InternalErrorException("Error in lock tasks by objective!");
         }
     }
