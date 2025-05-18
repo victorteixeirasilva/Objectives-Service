@@ -78,9 +78,8 @@ public class ObjectivesService {
     }
 
     public Objective getObjectiveById(UUID idObjective, UUID idUser) {
-        //TODO: Desenvolver método para o teste passar.
+        return objectiveRepository.findByIdAndIdUser(idObjective, idUser);
         //TODO: Refatorar código e criar documentação.
-        return null;
     }
 
     public List<Objective> getObjectivesByIdUser(UUID idUser) {
