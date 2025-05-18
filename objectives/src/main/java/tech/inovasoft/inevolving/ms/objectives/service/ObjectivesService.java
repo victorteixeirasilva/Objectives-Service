@@ -99,20 +99,28 @@ public class ObjectivesService {
         List<Objective> objectives = objectiveRepository.findAllByIdUser(idUser);
 
         if (objectives.isEmpty()) {
+            //TODO: Criar Teste Da Falha
             throw new NotFoundObjectivesByUser();
         }
 
         return objectives;
     }
 
+    /**
+     * @description - Get objectives by id user and status | Busca os objetivos pelo id do usuário e status
+     * @param idUser - Id of user who searched the objectives | Id do usuário que buscou os objetivos
+     * @param status - Status of objective to be searched | Status do objetivo a ser buscado
+     * @return - Returns the objectives found | Retorna os objetivos encontrados
+     * @throws NotFoundObjectivesByUserAndStatus - Error in get objectives by id user and status | Erro ao buscar objetivos pelo id do usuário e status
+     */
     public List<Objective> getObjectivesByIdUserStatus(UUID idUser, String status) throws NotFoundObjectivesByUserAndStatus {
         List<Objective> objectives = objectiveRepository.findAllByIdUserAndStatus(idUser, status);
 
         if (objectives.isEmpty()) {
+            //TODO: Criar Teste Da Falha
             throw new NotFoundObjectivesByUserAndStatus();
         }
 
         return objectives;
-        //TODO: Refatorar código e criar documentação.
     }
 }
