@@ -72,12 +72,12 @@ public class ObjectivesService {
             return new ResponseMessageDTO("Objective successfully completed");
 
         } {
+            //TODO: Criar Teste Da Falha
             throw new InternalErrorException("Error in lock tasks by objective!");
         }
     }
 
     public Objective getObjectiveById(UUID idObjective, UUID idUser) {
-        //TODO: Criar Teste Que Falhe
         //TODO: Desenvolver método para o teste passar.
         //TODO: Refatorar código e criar documentação.
         return null;

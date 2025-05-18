@@ -126,6 +126,31 @@ public class ObjectiveServiceSuccessTest {
 
     }
 
+    @Test
+    public void getObjectiveById() {
+        //Given
+        var idObjective = UUID.randomUUID();
+        var idUser = UUID.randomUUID();
+        var objective = new Objective();
+        objective.setId(idObjective);
+        objective.setNameObjective("Objetivo");
+        objective.setDescriptionObjective("Objetivo");
+        objective.setIdUser(idUser);
+
+        //When
+        when(repository.findByIdAndIdUser(idObjective, idUser)).thenReturn(objective);
+        var result = service.getObjectiveById(idObjective, idUser);
+
+        //Then
+        assertNotNull(result);
+        assertEquals(objective.getId(), result.getId());
+        assertEquals(objective.getNameObjective(), result.getNameObjective());
+        assertEquals(objective.getDescriptionObjective(), result.getDescriptionObjective());
+        assertEquals(objective.getIdUser(), result.getIdUser());
+
+        verify(repository, times(1)).findByIdAndIdUser(idObjective, idUser);
+    }
+
 
 
 }
