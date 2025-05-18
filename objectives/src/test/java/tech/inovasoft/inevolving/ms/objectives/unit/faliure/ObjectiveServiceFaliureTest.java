@@ -8,13 +8,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.response.ResponseMessageDTO;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.InternalErrorException;
+import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUser;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Objective;
+import tech.inovasoft.inevolving.ms.objectives.domain.model.Status;
 import tech.inovasoft.inevolving.ms.objectives.repository.interfaces.ObjectiveRepository;
 import tech.inovasoft.inevolving.ms.objectives.service.ObjectivesService;
 import tech.inovasoft.inevolving.ms.objectives.service.client.TasksServiceClient;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,7 +37,7 @@ public class ObjectiveServiceFaliureTest {
     private ObjectivesService service;
 
     @Test
-    public void completeObjectiveInternalErrorException() throws InternalErrorException {
+    public void completeObjectiveInternalErrorException() {
         //Given
         var idObjective = UUID.randomUUID();
         LocalDate date = LocalDate.now();
@@ -59,5 +63,24 @@ public class ObjectiveServiceFaliureTest {
 
         verify(repository, times(1)).findByIdAndIdUser(idObjective, idUser);
         verify(tasksServiceClient, times(1)).lockTaskByObjective(Date.valueOf(date), idUser, idObjective);
+    }
+
+    @Test
+    public void getObjectivesByIdUserNotFoundObjectivesByUser() throws NotFoundObjectivesByUser {
+        //Given
+        var idUser = UUID.randomUUID();
+        List<Objective> objectives = new ArrayList<>();
+
+        //When
+        when(repository.findAllByIdUser(idUser)).thenReturn(objectives);
+        var result = assertThrows(NotFoundObjectivesByUser.class, () -> {
+            service.getObjectivesByIdUser(idUser);
+        });
+
+        //Then
+        assertNotNull(result);
+        assertEquals("Not found objectives by user!", result.getMessage());
+
+        verify(repository, times(1)).findAllByIdUser(idUser);
     }
 }
