@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.request.RequestCreateObjectiveDTO;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.InternalErrorException;
+import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUser;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Objective;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Status;
 import tech.inovasoft.inevolving.ms.objectives.service.ObjectivesService;
@@ -92,7 +93,7 @@ public class ObjectivesController {
     @GetMapping("/user/{idUser}")
     public CompletableFuture<ResponseEntity> getObjectivesByIdUser(
             @PathVariable UUID idUser
-    ) {
+    ) throws NotFoundObjectivesByUser {
         return CompletableFuture.completedFuture(
                 ResponseEntity.ok(
                         objectivesService.getObjectivesByIdUser(idUser)));

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.request.RequestCreateObjectiveDTO;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.response.ResponseMessageDTO;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.InternalErrorException;
+import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUser;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Objective;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Status;
 import tech.inovasoft.inevolving.ms.objectives.repository.interfaces.ObjectiveRepository;
@@ -87,11 +88,15 @@ public class ObjectivesService {
         return objectiveRepository.findByIdAndIdUser(idObjective, idUser);
     }
 
-    public List<Objective> getObjectivesByIdUser(UUID idUser) {
-        //TODO: Criar Teste Que Falhe
-        //TODO: Desenvolver método para o teste passar.
+    public List<Objective> getObjectivesByIdUser(UUID idUser) throws NotFoundObjectivesByUser {
+        List<Objective> objectives = objectiveRepository.findAllByIdUser(idUser);
+
+        if (objectives.isEmpty()) {
+            throw new NotFoundObjectivesByUser();
+        }
+
+        return objectives;
         //TODO: Refatorar código e criar documentação.
-        return null;
     }
 
     public List<Objective> getObjectivesByIdUserStatus(UUID idUser, String status) {
