@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.response.ResponseMessageDTO;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.InternalErrorException;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUser;
+import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUserAndStatus;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Objective;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Status;
 import tech.inovasoft.inevolving.ms.objectives.repository.interfaces.ObjectiveRepository;
@@ -66,7 +67,7 @@ public class ObjectiveServiceFaliureTest {
     }
 
     @Test
-    public void getObjectivesByIdUserNotFoundObjectivesByUser() throws NotFoundObjectivesByUser {
+    public void getObjectivesByIdUserNotFoundObjectivesByUser() {
         //Given
         var idUser = UUID.randomUUID();
         List<Objective> objectives = new ArrayList<>();
@@ -82,5 +83,24 @@ public class ObjectiveServiceFaliureTest {
         assertEquals("Not found objectives by user!", result.getMessage());
 
         verify(repository, times(1)).findAllByIdUser(idUser);
+    }
+
+    @Test
+    public void getObjectivesByIdUserStatusNotFoundObjectivesByUserAndStatus() throws NotFoundObjectivesByUserAndStatus {
+        //Given
+        var idUser = UUID.randomUUID();
+        List<Objective> objectives = new ArrayList<>();
+
+        //When
+        when(repository.findAllByIdUserAndStatus(idUser, Status.TODO)).thenReturn(objectives);
+        var result = assertThrows(NotFoundObjectivesByUserAndStatus.class, () -> {
+            service.getObjectivesByIdUserStatus(idUser, Status.TODO);
+        });
+
+        //Then
+        assertNotNull(result);
+        assertEquals("Not found objectives by user!", result.getMessage());
+
+        verify(repository, times(1)).findAllByIdUserAndStatus(idUser, Status.TODO);
     }
 }

@@ -115,7 +115,6 @@ public class ObjectivesService {
         List<Objective> objectives = objectiveRepository.findAllByIdUserAndStatus(idUser, status);
 
         if (objectives.isEmpty()) {
-            //TODO: Criar Teste Da Falha
             throw new NotFoundObjectivesByUserAndStatus();
         }
 
