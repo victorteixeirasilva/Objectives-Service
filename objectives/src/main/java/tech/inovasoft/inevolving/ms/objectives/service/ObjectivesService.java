@@ -105,7 +105,6 @@ public class ObjectivesService {
     }
 
     public List<Objective> getObjectivesByIdUserStatus(UUID idUser, String status) {
-        //TODO: Criar Teste Que Falhe
         //TODO: Desenvolver método para o teste passar.
         //TODO: Refatorar código e criar documentação.
         return null;

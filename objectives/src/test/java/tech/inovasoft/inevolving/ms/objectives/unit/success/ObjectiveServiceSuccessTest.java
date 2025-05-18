@@ -182,6 +182,35 @@ public class ObjectiveServiceSuccessTest {
         verify(repository, times(1)).findAllByIdUser(idUser);
     }
 
+    @Test
+    public void getObjectivesByIdUserStatus() {
+        //Given
+        var idUser = UUID.randomUUID();
+        List<Objective> objectives = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            objectives.add(new Objective(
+                    UUID.randomUUID(),
+                    "Objetivo " + i,
+                    "Descrição " + i,
+                    Status.TODO,
+                    null,
+                    idUser
+            ));
+        }
+
+        //When
+        when(repository.findAllByIdUserAndStatus(idUser, Status.TODO)).thenReturn(objectives);
+        var result = service.getObjectivesByIdUserStatus(idUser, Status.TODO);
+
+        //Then
+        assertNotNull(result);
+        assertEquals(objectives.size(), result.size());
+        assertEquals(Status.TODO, result.getFirst().getStatusObjective());
+
+        verify(repository, times(1)).findAllByIdUserAndStatus(idUser, Status.TODO);
+
+    }
+
 
 
 }
