@@ -10,6 +10,7 @@ import tech.inovasoft.inevolving.ms.objectives.domain.dto.request.RequestCreateO
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.response.ResponseMessageDTO;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.InternalErrorException;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUser;
+import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUserAndStatus;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Objective;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Status;
 import tech.inovasoft.inevolving.ms.objectives.repository.interfaces.ObjectiveRepository;
@@ -183,7 +184,7 @@ public class ObjectiveServiceSuccessTest {
     }
 
     @Test
-    public void getObjectivesByIdUserStatus() {
+    public void getObjectivesByIdUserStatus() throws NotFoundObjectivesByUserAndStatus {
         //Given
         var idUser = UUID.randomUUID();
         List<Objective> objectives = new ArrayList<>();

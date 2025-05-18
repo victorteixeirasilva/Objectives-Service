@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.request.RequestCreateObjectiveDTO;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.InternalErrorException;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUser;
-import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUserAndStatus;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Objective;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Status;
 import tech.inovasoft.inevolving.ms.objectives.service.ObjectivesService;
@@ -108,7 +107,7 @@ public class ObjectivesController {
     @GetMapping("/status/todo/user/{idUser}")
     public CompletableFuture<ResponseEntity> getObjectivesByIdUserToDo(
             @PathVariable UUID idUser
-    ) throws NotFoundObjectivesByUserAndStatus {
+    ) {
         return CompletableFuture.completedFuture(
                 ResponseEntity.ok(
                         objectivesService.getObjectivesByIdUserStatus(idUser, Status.TODO)));
@@ -122,7 +121,7 @@ public class ObjectivesController {
     @GetMapping("/status/done/user/{idUser}")
     public CompletableFuture<ResponseEntity> getObjectivesByIdUserDone(
             @PathVariable UUID idUser
-    ) throws NotFoundObjectivesByUserAndStatus {
+    ) {
         return CompletableFuture.completedFuture(
                 ResponseEntity.ok(
                         objectivesService.getObjectivesByIdUserStatus(idUser, Status.DONE)));

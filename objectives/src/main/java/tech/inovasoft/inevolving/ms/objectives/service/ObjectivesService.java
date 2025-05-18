@@ -6,6 +6,7 @@ import tech.inovasoft.inevolving.ms.objectives.domain.dto.request.RequestCreateO
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.response.ResponseMessageDTO;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.InternalErrorException;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUser;
+import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUserAndStatus;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Objective;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Status;
 import tech.inovasoft.inevolving.ms.objectives.repository.interfaces.ObjectiveRepository;
@@ -104,9 +105,14 @@ public class ObjectivesService {
         return objectives;
     }
 
-    public List<Objective> getObjectivesByIdUserStatus(UUID idUser, String status) {
-        //TODO: Desenvolver método para o teste passar.
+    public List<Objective> getObjectivesByIdUserStatus(UUID idUser, String status) throws NotFoundObjectivesByUserAndStatus {
+        List<Objective> objectives = objectiveRepository.findAllByIdUserAndStatus(idUser, status);
+
+        if (objectives.isEmpty()) {
+            throw new NotFoundObjectivesByUserAndStatus();
+        }
+
+        return objectives;
         //TODO: Refatorar código e criar documentação.
-        return null;
     }
 }
