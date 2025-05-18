@@ -77,9 +77,14 @@ public class ObjectivesService {
         }
     }
 
+    /**
+     * @description - Get objective by id | Busca um objetivo pelo id
+     * @param idObjective - Id of objective to be searched | Id do objetivo a ser buscado
+     * @param idUser - Id of user who searched the objective | Id do usuário que buscou o objetivo
+     * @return - Returns the objective found | Retorna o objetivo encontrado
+     */
     public Objective getObjectiveById(UUID idObjective, UUID idUser) {
         return objectiveRepository.findByIdAndIdUser(idObjective, idUser);
-        //TODO: Refatorar código e criar documentação.
     }
 
     public List<Objective> getObjectivesByIdUser(UUID idUser) {
