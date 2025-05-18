@@ -4,9 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.request.RequestCreateObjectiveDTO;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.response.ResponseMessageDTO;
+import tech.inovasoft.inevolving.ms.objectives.domain.exception.InternalErrorException;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Objective;
+import tech.inovasoft.inevolving.ms.objectives.domain.model.Status;
 import tech.inovasoft.inevolving.ms.objectives.repository.interfaces.ObjectiveRepository;
+import tech.inovasoft.inevolving.ms.objectives.service.client.TasksServiceClient;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +20,9 @@ public class ObjectivesService {
 
     @Autowired
     private ObjectiveRepository objectiveRepository;
+
+    @Autowired
+    private TasksServiceClient tasksService;
 
     /**
      * @description - Add a new objective | Adiciona um novo objetivo
@@ -42,10 +49,24 @@ public class ObjectivesService {
         return objectiveRepository.save(oldObjective);
     }
 
-    public ResponseMessageDTO completeObjective(UUID idObjective, LocalDate conclusionDate, UUID idUser) {
-        //TODO: Desenvolver método para o teste passar.
+    public ResponseMessageDTO completeObjective(UUID idObjective, LocalDate conclusionDate, UUID idUser) throws InternalErrorException {
+        Objective objective = objectiveRepository.findByIdAndIdUser(idObjective, idUser);
+
+        var response = tasksService.lockTaskByObjective(Date.valueOf(conclusionDate), idUser,idObjective);
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+
+            objective.setCompletionDate(Date.valueOf(conclusionDate));
+            objective.setStatusObjective(Status.DONE);
+
+            objectiveRepository.save(objective);
+
+            return new ResponseMessageDTO("Objective successfully completed");
+
+        } {
+            throw new InternalErrorException("Error in lock tasks by objective!");
+        }
         //TODO: Refatorar código e criar documentação.
-        return null;
     }
 
     public Objective getObjectiveById(UUID idObjective, UUID idUser) {

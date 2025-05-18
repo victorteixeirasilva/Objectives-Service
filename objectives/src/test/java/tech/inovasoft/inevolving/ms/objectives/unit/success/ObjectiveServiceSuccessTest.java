@@ -8,6 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.request.RequestCreateObjectiveDTO;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.response.ResponseMessageDTO;
+import tech.inovasoft.inevolving.ms.objectives.domain.exception.InternalErrorException;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Objective;
 import tech.inovasoft.inevolving.ms.objectives.repository.interfaces.ObjectiveRepository;
 import tech.inovasoft.inevolving.ms.objectives.service.ObjectivesService;
@@ -97,7 +98,7 @@ public class ObjectiveServiceSuccessTest {
     }
 
     @Test
-    public void completeObjective(){
+    public void completeObjective() throws InternalErrorException {
         //Given
         var idObjective = UUID.randomUUID();
         LocalDate date = LocalDate.now();
@@ -113,6 +114,7 @@ public class ObjectiveServiceSuccessTest {
         when(repository.findByIdAndIdUser(idObjective, idUser)).thenReturn(objective);
         when(tasksServiceClient.lockTaskByObjective(Date.valueOf(date), idUser, idObjective))
                 .thenReturn(ResponseEntity.ok().build());
+        when(repository.save(any())).thenReturn(objective);
         ResponseMessageDTO result = service.completeObjective(idObjective, date, idUser);
 
         //Then
