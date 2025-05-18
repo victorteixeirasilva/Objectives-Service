@@ -88,6 +88,12 @@ public class ObjectivesService {
         return objectiveRepository.findByIdAndIdUser(idObjective, idUser);
     }
 
+    /**
+     * @description - Get objectives by id user | Busca os objetivos pelo id do usuário
+     * @param idUser - Id of user who searched the objectives | Id do usuário que buscou os objetivos
+     * @return - Returns the objectives found | Retorna os objetivos encontrados
+     * @throws NotFoundObjectivesByUser - Error in get objectives by id user | Erro ao buscar objetivos pelo id do usuário
+     */
     public List<Objective> getObjectivesByIdUser(UUID idUser) throws NotFoundObjectivesByUser {
         List<Objective> objectives = objectiveRepository.findAllByIdUser(idUser);
 
@@ -96,7 +102,6 @@ public class ObjectivesService {
         }
 
         return objectives;
-        //TODO: Refatorar código e criar documentação.
     }
 
     public List<Objective> getObjectivesByIdUserStatus(UUID idUser, String status) {
