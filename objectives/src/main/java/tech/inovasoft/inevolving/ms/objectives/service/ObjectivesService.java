@@ -49,6 +49,14 @@ public class ObjectivesService {
         return objectiveRepository.save(oldObjective);
     }
 
+    /**
+     * @description - Complete objective | Completa um objetivo
+     * @param idObjective - Id of objective to be completed | Id do objetivo a ser concluído
+     * @param conclusionDate - Date of objective completion | Data de conclusão do objetivo
+     * @param idUser - Id of user who completed the objective | Id do usuário que concluiu o objetivo
+     * @return - Returns a message indicating that the objective was successfully completed | Retorna uma mensagem indicando que o objetivo foi concluído com sucesso
+     * @throws InternalErrorException - Error in lock tasks by objective | Erro ao bloquear tarefas por objetivo
+     */
     public ResponseMessageDTO completeObjective(UUID idObjective, LocalDate conclusionDate, UUID idUser) throws InternalErrorException {
         Objective objective = objectiveRepository.findByIdAndIdUser(idObjective, idUser);
 
@@ -66,7 +74,6 @@ public class ObjectivesService {
         } {
             throw new InternalErrorException("Error in lock tasks by objective!");
         }
-        //TODO: Refatorar código e criar documentação.
     }
 
     public Objective getObjectiveById(UUID idObjective, UUID idUser) {
