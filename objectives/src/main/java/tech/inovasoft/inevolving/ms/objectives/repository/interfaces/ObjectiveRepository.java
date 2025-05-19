@@ -1,6 +1,7 @@
 package tech.inovasoft.inevolving.ms.objectives.repository.interfaces;
 
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.DataBaseException;
+import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUser;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Objective;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface ObjectiveRepository {
 
     Objective save(Objective newObjective) throws DataBaseException;
 
-    Objective findByIdAndIdUser(UUID idObjective, UUID idUser) throws DataBaseException;
+    Objective findByIdAndIdUser(UUID idObjective, UUID idUser) throws DataBaseException, NotFoundObjectivesByUser;
 
     List<Objective> findAllByIdUser(UUID idUser);
 

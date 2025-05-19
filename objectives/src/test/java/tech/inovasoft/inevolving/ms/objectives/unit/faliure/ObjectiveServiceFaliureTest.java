@@ -39,7 +39,7 @@ public class ObjectiveServiceFaliureTest {
     private ObjectivesService service;
 
     @Test
-    public void completeObjectiveInternalErrorException() throws DataBaseException {
+    public void completeObjectiveInternalErrorException() throws DataBaseException, NotFoundObjectivesByUser {
         //Given
         var idObjective = UUID.randomUUID();
         LocalDate date = LocalDate.now();

@@ -7,10 +7,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.request.RequestCreateObjectiveDTO;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.DataBaseException;
+import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUser;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Objective;
 import tech.inovasoft.inevolving.ms.objectives.repository.implementation.ObjectiveRepositoryImplementation;
 import tech.inovasoft.inevolving.ms.objectives.repository.interfaces.ObjectiveJpaRepository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,7 +50,7 @@ public class ObjectiveRepositoryImplementationSuccessTest {
     }
 
     @Test
-    public void findByIdAndIdUser() throws DataBaseException {
+    public void findByIdAndIdUser() throws DataBaseException, NotFoundObjectivesByUser {
         //Given
         var idObjective = UUID.randomUUID();
         var idUser = UUID.randomUUID();
@@ -59,7 +61,7 @@ public class ObjectiveRepositoryImplementationSuccessTest {
         objective.setIdUser(idUser);
 
         //When
-        when(objectiveJpaRepository.findByIdAndIdUser(idObjective, idUser)).thenReturn(objective);
+        when(objectiveJpaRepository.findByIdAndIdUser(idObjective, idUser)).thenReturn(Optional.of(objective));
         var result = objectiveRepositoryImplementation.findByIdAndIdUser(idObjective, idUser);
 
         //Then

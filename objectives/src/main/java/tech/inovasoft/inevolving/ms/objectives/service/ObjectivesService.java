@@ -43,7 +43,7 @@ public class ObjectivesService {
      * @param dto - RequestCreateObjectiveDTO (Data Transfer Object) - Objeto de transferência de dados
      * @return - Returns the updated objective | Retorna o objetivo atualizado
      */
-    public Objective updateObjective(UUID idObjective, RequestCreateObjectiveDTO dto, UUID idUser) throws DataBaseException {
+    public Objective updateObjective(UUID idObjective, RequestCreateObjectiveDTO dto, UUID idUser) throws DataBaseException, NotFoundObjectivesByUser {
         var oldObjective = objectiveRepository.findByIdAndIdUser(idObjective, idUser);
 
         oldObjective.setNameObjective(dto.nameObjective());
@@ -60,7 +60,7 @@ public class ObjectivesService {
      * @return - Returns a message indicating that the objective was successfully completed | Retorna uma mensagem indicando que o objetivo foi concluído com sucesso
      * @throws InternalErrorException - Error in lock tasks by objective | Erro ao bloquear tarefas por objetivo
      */
-    public ResponseMessageDTO completeObjective(UUID idObjective, LocalDate conclusionDate, UUID idUser) throws InternalErrorException, DataBaseException {
+    public ResponseMessageDTO completeObjective(UUID idObjective, LocalDate conclusionDate, UUID idUser) throws InternalErrorException, DataBaseException, NotFoundObjectivesByUser {
         Objective objective = objectiveRepository.findByIdAndIdUser(idObjective, idUser);
 
         var response = tasksService.lockTaskByObjective(Date.valueOf(conclusionDate), idUser,idObjective);
@@ -85,7 +85,7 @@ public class ObjectivesService {
      * @param idUser - Id of user who searched the objective | Id do usuário que buscou o objetivo
      * @return - Returns the objective found | Retorna o objetivo encontrado
      */
-    public Objective getObjectiveById(UUID idObjective, UUID idUser) throws DataBaseException {
+    public Objective getObjectiveById(UUID idObjective, UUID idUser) throws DataBaseException, NotFoundObjectivesByUser {
         return objectiveRepository.findByIdAndIdUser(idObjective, idUser);
     }
 

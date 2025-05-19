@@ -67,7 +67,7 @@ public class ObjectiveServiceSuccessTest {
     }
 
     @Test
-    public void updateObjective() throws DataBaseException {
+    public void updateObjective() throws DataBaseException, NotFoundObjectivesByUser {
         //Given
         var idObjective = UUID.randomUUID();
         RequestCreateObjectiveDTO request = new RequestCreateObjectiveDTO(
@@ -104,7 +104,7 @@ public class ObjectiveServiceSuccessTest {
     }
 
     @Test
-    public void completeObjective() throws InternalErrorException, DataBaseException {
+    public void completeObjective() throws InternalErrorException, DataBaseException, NotFoundObjectivesByUser {
         //Given
         var idObjective = UUID.randomUUID();
         LocalDate date = LocalDate.now();
@@ -133,7 +133,7 @@ public class ObjectiveServiceSuccessTest {
     }
 
     @Test
-    public void getObjectiveById() throws DataBaseException {
+    public void getObjectiveById() throws DataBaseException, NotFoundObjectivesByUser {
         //Given
         var idObjective = UUID.randomUUID();
         var idUser = UUID.randomUUID();

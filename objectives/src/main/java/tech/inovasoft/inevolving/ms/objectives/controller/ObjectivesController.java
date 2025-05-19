@@ -50,7 +50,7 @@ public class ObjectivesController {
             @PathVariable UUID idObjective,
             @PathVariable UUID idUser,
             @RequestBody RequestCreateObjectiveDTO dto
-    ) throws DataBaseException {
+    ) throws DataBaseException, NotFoundObjectivesByUser {
         return CompletableFuture.completedFuture(
                 ResponseEntity.ok(
                         objectivesService.updateObjective(idObjective, dto, idUser)));
@@ -66,7 +66,7 @@ public class ObjectivesController {
             @PathVariable UUID idObjective,
             @PathVariable LocalDate conclusionDate,
             @PathVariable UUID idUser
-    ) throws InternalErrorException, DataBaseException {
+    ) throws InternalErrorException, DataBaseException, NotFoundObjectivesByUser {
         return CompletableFuture.completedFuture(
                 ResponseEntity.ok(
                         objectivesService.completeObjective(idObjective, conclusionDate, idUser)));
@@ -81,7 +81,7 @@ public class ObjectivesController {
     public CompletableFuture<ResponseEntity> getObjectiveById(
             @PathVariable UUID idObjective,
             @PathVariable UUID idUser
-    ) throws DataBaseException {
+    ) throws DataBaseException, NotFoundObjectivesByUser {
         return CompletableFuture.completedFuture(
                 ResponseEntity.ok(
                         objectivesService.getObjectiveById(idObjective, idUser)));
