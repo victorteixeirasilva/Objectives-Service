@@ -95,12 +95,12 @@ public class ObjectiveRepositoryImplementationSuccessTest {
 
         //When
         when(objectiveJpaRepository.findAllByIdUser(idUser)).thenReturn(objectives);
-        var result = objectiveRepositoryImplementation.findAllByIdUser(idUser);
+        var result = service.getObjectivesByIdUser(idUser);
 
         //Then
         assertNotNull(result);
         assertEquals(objectives.size(), result.size());
 
-        verify(objectiveJpaRepository, times(1)).findAllByIdUser(idUser);
+        verify(repository, times(1)).findAllByIdUser(idUser);
     }
 }

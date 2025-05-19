@@ -60,7 +60,7 @@ public class ObjectiveRepositoryImplementation implements ObjectiveRepository {
 
     @Override
     public List<Objective> findAllByIdUser(UUID idUser) {
-        //TODO: Desenvolver Teste Que Falhe.
+        //TODO:
         //TODO: Desenvolver Método para o teste passar.
         //TODO: Refatorar Código.
         return List.of();
