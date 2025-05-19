@@ -73,6 +73,13 @@ public class ObjectiveRepositoryImplementation implements ObjectiveRepository {
         }
     }
 
+    /**
+     * @description - Finds all objectives by idUser and status. | Encontra todos os objetivos pelo idUser e status.
+     * @param idUser - The id of the user who owns the objectives. | O id do usuário que possui os objetivos.
+     * @param status - The status of the objectives. | O status dos objetivos.
+     * @return - A list of objectives. | Uma lista de objetivos.
+     * @throws DataBaseException - If there is an error finding the objectives. | Se houver algum erro ao encontrar os objetivos.
+     */
     @Override
     public List<Objective> findAllByIdUserAndStatus(UUID idUser, String status) throws DataBaseException {
         try {
@@ -80,6 +87,5 @@ public class ObjectiveRepositoryImplementation implements ObjectiveRepository {
         } catch (Exception e) {
             throw new DataBaseException("(findAllByIdUserAndStatus)");
         }
-        //TODO: Refatorar Código.
     }
 }
