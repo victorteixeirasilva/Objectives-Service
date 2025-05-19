@@ -58,6 +58,12 @@ public class ObjectiveRepositoryImplementation implements ObjectiveRepository {
         return objective.get();
     }
 
+    /**
+     * @description - Finds all objectives by idUser. | Encontra todos os objetivos pelo idUser.
+     * @param idUser - The id of the user who owns the objectives. | O id do usuário que possui os objetivos.
+     * @return - A list of objectives. | Uma lista de objetivos.
+     * @throws DataBaseException - If there is an error finding the objectives. | Se houver algum erro ao encontrar os objetivos.
+     */
     @Override
     public List<Objective> findAllByIdUser(UUID idUser) throws DataBaseException {
         try {
@@ -65,7 +71,6 @@ public class ObjectiveRepositoryImplementation implements ObjectiveRepository {
         } catch (Exception e) {
             throw new DataBaseException("(findAllByIdUser)");
         }
-        //TODO: Refatorar Código.
     }
 
     @Override
