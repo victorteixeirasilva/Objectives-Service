@@ -158,7 +158,7 @@ public class ObjectiveServiceSuccessTest {
     }
 
     @Test
-    public void getObjectivesByIdUser() throws NotFoundObjectivesByUser {
+    public void getObjectivesByIdUser() throws NotFoundObjectivesByUser, DataBaseException {
         //Given
         var idUser = UUID.randomUUID();
         List<Objective> objectives = new ArrayList<>();

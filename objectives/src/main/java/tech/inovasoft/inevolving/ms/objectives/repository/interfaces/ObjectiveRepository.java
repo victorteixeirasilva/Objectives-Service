@@ -13,7 +13,7 @@ public interface ObjectiveRepository {
 
     Objective findByIdAndIdUser(UUID idObjective, UUID idUser) throws DataBaseException, NotFoundObjectivesByUser;
 
-    List<Objective> findAllByIdUser(UUID idUser);
+    List<Objective> findAllByIdUser(UUID idUser) throws DataBaseException;
 
     List<Objective> findAllByIdUserAndStatus(UUID idUser, String todo);
 }

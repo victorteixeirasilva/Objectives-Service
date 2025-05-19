@@ -95,7 +95,7 @@ public class ObjectivesService {
      * @return - Returns the objectives found | Retorna os objetivos encontrados
      * @throws NotFoundObjectivesByUser - Error in get objectives by id user | Erro ao buscar objetivos pelo id do usuário
      */
-    public List<Objective> getObjectivesByIdUser(UUID idUser) throws NotFoundObjectivesByUser {
+    public List<Objective> getObjectivesByIdUser(UUID idUser) throws NotFoundObjectivesByUser, DataBaseException {
         List<Objective> objectives = objectiveRepository.findAllByIdUser(idUser);
 
         if (objectives.isEmpty()) {

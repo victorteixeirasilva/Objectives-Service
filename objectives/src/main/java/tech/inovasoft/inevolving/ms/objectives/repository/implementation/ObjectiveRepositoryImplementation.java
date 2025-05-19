@@ -59,11 +59,13 @@ public class ObjectiveRepositoryImplementation implements ObjectiveRepository {
     }
 
     @Override
-    public List<Objective> findAllByIdUser(UUID idUser) {
-        //TODO:
-        //TODO: Desenvolver Método para o teste passar.
+    public List<Objective> findAllByIdUser(UUID idUser) throws DataBaseException {
+        try {
+            return objectiveJpaRepository.findAllByIdUser(idUser);
+        } catch (Exception e) {
+            throw new DataBaseException("(findAllByIdUser)");
+        }
         //TODO: Refatorar Código.
-        return List.of();
     }
 
     @Override

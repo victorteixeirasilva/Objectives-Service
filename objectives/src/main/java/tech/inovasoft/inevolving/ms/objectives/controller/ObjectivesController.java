@@ -95,7 +95,7 @@ public class ObjectivesController {
     @GetMapping("/user/{idUser}")
     public CompletableFuture<ResponseEntity> getObjectivesByIdUser(
             @PathVariable UUID idUser
-    ) throws NotFoundObjectivesByUser {
+    ) throws NotFoundObjectivesByUser, DataBaseException {
         return CompletableFuture.completedFuture(
                 ResponseEntity.ok(
                         objectivesService.getObjectivesByIdUser(idUser)));
