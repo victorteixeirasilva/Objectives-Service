@@ -10,7 +10,7 @@ public interface ObjectiveRepository {
 
     Objective save(Objective newObjective) throws DataBaseException;
 
-    Objective findByIdAndIdUser(UUID idObjective, UUID idUser);
+    Objective findByIdAndIdUser(UUID idObjective, UUID idUser) throws DataBaseException;
 
     List<Objective> findAllByIdUser(UUID idUser);
 

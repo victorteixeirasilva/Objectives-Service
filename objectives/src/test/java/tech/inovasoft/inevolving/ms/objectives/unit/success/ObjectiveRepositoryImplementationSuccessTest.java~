@@ -48,7 +48,7 @@ public class ObjectiveRepositoryImplementationSuccessTest {
     }
 
     @Test
-    public void findByIdAndIdUser() throws DataBaseException {
+    public void findByIdAndIdUser() {
         //Given
         var idObjective = UUID.randomUUID();
         var idUser = UUID.randomUUID();

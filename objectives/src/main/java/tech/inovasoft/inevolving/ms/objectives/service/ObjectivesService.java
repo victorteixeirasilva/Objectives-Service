@@ -85,7 +85,7 @@ public class ObjectivesService {
      * @param idUser - Id of user who searched the objective | Id do usuário que buscou o objetivo
      * @return - Returns the objective found | Retorna o objetivo encontrado
      */
-    public Objective getObjectiveById(UUID idObjective, UUID idUser) {
+    public Objective getObjectiveById(UUID idObjective, UUID idUser) throws DataBaseException {
         return objectiveRepository.findByIdAndIdUser(idObjective, idUser);
     }
 

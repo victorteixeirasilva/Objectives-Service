@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.response.ResponseMessageDTO;
+import tech.inovasoft.inevolving.ms.objectives.domain.exception.DataBaseException;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.InternalErrorException;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUser;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUserAndStatus;
@@ -38,7 +39,7 @@ public class ObjectiveServiceFaliureTest {
     private ObjectivesService service;
 
     @Test
-    public void completeObjectiveInternalErrorException() {
+    public void completeObjectiveInternalErrorException() throws DataBaseException {
         //Given
         var idObjective = UUID.randomUUID();
         LocalDate date = LocalDate.now();

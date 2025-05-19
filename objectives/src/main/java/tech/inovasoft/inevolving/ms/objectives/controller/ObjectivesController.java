@@ -81,7 +81,7 @@ public class ObjectivesController {
     public CompletableFuture<ResponseEntity> getObjectiveById(
             @PathVariable UUID idObjective,
             @PathVariable UUID idUser
-    ) {
+    ) throws DataBaseException {
         return CompletableFuture.completedFuture(
                 ResponseEntity.ok(
                         objectivesService.getObjectiveById(idObjective, idUser)));

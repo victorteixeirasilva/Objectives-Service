@@ -25,15 +25,20 @@ public class ObjectiveRepositoryImplementation implements ObjectiveRepository {
         try {
             return objectiveJpaRepository.save(newObjective);
         } catch (Exception e) {
+            //TODO: TESTE
             throw new DataBaseException("(save)");
         }
     }
 
     @Override
-    public Objective findByIdAndIdUser(UUID idObjective, UUID idUser) {
-        //TODO: Desenvolver Método para o teste passar.
+    public Objective findByIdAndIdUser(UUID idObjective, UUID idUser) throws DataBaseException {
+        try {
+            return objectiveJpaRepository.findByIdAndIdUser(idObjective, idUser);
+        } catch (Exception e) {
+            //TODO: TESTE
+            throw new DataBaseException("(findByIdAndIdUser)");
+        }
         //TODO: Refatorar Código.
-        return null;
     }
 
     @Override

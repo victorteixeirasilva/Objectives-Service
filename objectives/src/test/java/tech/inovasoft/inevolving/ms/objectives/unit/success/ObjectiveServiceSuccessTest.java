@@ -133,7 +133,7 @@ public class ObjectiveServiceSuccessTest {
     }
 
     @Test
-    public void getObjectiveById() {
+    public void getObjectiveById() throws DataBaseException {
         //Given
         var idObjective = UUID.randomUUID();
         var idUser = UUID.randomUUID();
