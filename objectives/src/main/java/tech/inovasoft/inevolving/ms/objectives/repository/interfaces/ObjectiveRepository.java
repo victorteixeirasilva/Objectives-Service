@@ -15,5 +15,5 @@ public interface ObjectiveRepository {
 
     List<Objective> findAllByIdUser(UUID idUser) throws DataBaseException;
 
-    List<Objective> findAllByIdUserAndStatus(UUID idUser, String todo);
+    List<Objective> findAllByIdUserAndStatus(UUID idUser, String todo) throws DataBaseException;
 }

@@ -105,7 +105,7 @@ public class ObjectiveRepositoryImplementationSuccessTest {
     }
 
     @Test
-    public void findAllByIdUserAndStatus() {
+    public void findAllByIdUserAndStatus() throws DataBaseException {
         //Given
         var idUser = UUID.randomUUID();
         List<Objective> objectives = new ArrayList<>();

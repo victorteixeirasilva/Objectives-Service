@@ -109,7 +109,7 @@ public class ObjectivesController {
     @GetMapping("/status/todo/user/{idUser}")
     public CompletableFuture<ResponseEntity> getObjectivesByIdUserToDo(
             @PathVariable UUID idUser
-    ) throws NotFoundObjectivesByUserAndStatus {
+    ) throws NotFoundObjectivesByUserAndStatus, DataBaseException {
         return CompletableFuture.completedFuture(
                 ResponseEntity.ok(
                         objectivesService.getObjectivesByIdUserStatus(idUser, Status.TODO)));
@@ -123,7 +123,7 @@ public class ObjectivesController {
     @GetMapping("/status/done/user/{idUser}")
     public CompletableFuture<ResponseEntity> getObjectivesByIdUserDone(
             @PathVariable UUID idUser
-    ) throws NotFoundObjectivesByUserAndStatus {
+    ) throws NotFoundObjectivesByUserAndStatus, DataBaseException {
         return CompletableFuture.completedFuture(
                 ResponseEntity.ok(
                         objectivesService.getObjectivesByIdUserStatus(idUser, Status.DONE)));
