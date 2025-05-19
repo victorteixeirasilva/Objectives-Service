@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.request.RequestCreateObjectiveDTO;
+import tech.inovasoft.inevolving.ms.objectives.domain.exception.DataBaseException;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.InternalErrorException;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUser;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUserAndStatus;
@@ -34,7 +35,7 @@ public class ObjectivesController {
     @PostMapping
     public CompletableFuture<ResponseEntity> add(
             @RequestBody RequestCreateObjectiveDTO dto
-    ) {
+    ) throws DataBaseException {
         return CompletableFuture.completedFuture(
                 ResponseEntity.ok(objectivesService.addObjective(dto)));
     }
@@ -49,7 +50,7 @@ public class ObjectivesController {
             @PathVariable UUID idObjective,
             @PathVariable UUID idUser,
             @RequestBody RequestCreateObjectiveDTO dto
-    ) {
+    ) throws DataBaseException {
         return CompletableFuture.completedFuture(
                 ResponseEntity.ok(
                         objectivesService.updateObjective(idObjective, dto, idUser)));
@@ -65,7 +66,7 @@ public class ObjectivesController {
             @PathVariable UUID idObjective,
             @PathVariable LocalDate conclusionDate,
             @PathVariable UUID idUser
-    ) throws InternalErrorException {
+    ) throws InternalErrorException, DataBaseException {
         return CompletableFuture.completedFuture(
                 ResponseEntity.ok(
                         objectivesService.completeObjective(idObjective, conclusionDate, idUser)));

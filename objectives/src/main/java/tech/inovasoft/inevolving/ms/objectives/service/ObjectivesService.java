@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.request.RequestCreateObjectiveDTO;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.response.ResponseMessageDTO;
+import tech.inovasoft.inevolving.ms.objectives.domain.exception.DataBaseException;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.InternalErrorException;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUser;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUserAndStatus;
@@ -31,7 +32,7 @@ public class ObjectivesService {
      * @param dto - RequestCreateObjectiveDTO (Data Transfer Object) - Objeto de transferência de dados
      * @return  - Returns the new registered objective. | Retorna o novo objetivo cadastrado.
      */
-    public Objective addObjective(RequestCreateObjectiveDTO dto) {
+    public Objective addObjective(RequestCreateObjectiveDTO dto) throws DataBaseException {
         var newObjective = new Objective(dto);
         return objectiveRepository.save(newObjective);
     }
@@ -42,7 +43,7 @@ public class ObjectivesService {
      * @param dto - RequestCreateObjectiveDTO (Data Transfer Object) - Objeto de transferência de dados
      * @return - Returns the updated objective | Retorna o objetivo atualizado
      */
-    public Objective updateObjective(UUID idObjective, RequestCreateObjectiveDTO dto, UUID idUser) {
+    public Objective updateObjective(UUID idObjective, RequestCreateObjectiveDTO dto, UUID idUser) throws DataBaseException {
         var oldObjective = objectiveRepository.findByIdAndIdUser(idObjective, idUser);
 
         oldObjective.setNameObjective(dto.nameObjective());
@@ -59,7 +60,7 @@ public class ObjectivesService {
      * @return - Returns a message indicating that the objective was successfully completed | Retorna uma mensagem indicando que o objetivo foi concluído com sucesso
      * @throws InternalErrorException - Error in lock tasks by objective | Erro ao bloquear tarefas por objetivo
      */
-    public ResponseMessageDTO completeObjective(UUID idObjective, LocalDate conclusionDate, UUID idUser) throws InternalErrorException {
+    public ResponseMessageDTO completeObjective(UUID idObjective, LocalDate conclusionDate, UUID idUser) throws InternalErrorException, DataBaseException {
         Objective objective = objectiveRepository.findByIdAndIdUser(idObjective, idUser);
 
         var response = tasksService.lockTaskByObjective(Date.valueOf(conclusionDate), idUser,idObjective);

@@ -8,6 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.request.RequestCreateObjectiveDTO;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.response.ResponseMessageDTO;
+import tech.inovasoft.inevolving.ms.objectives.domain.exception.DataBaseException;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.InternalErrorException;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUser;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUserAndStatus;
@@ -40,7 +41,7 @@ public class ObjectiveServiceSuccessTest {
     private ObjectivesService service;
 
     @Test
-    public void addObjective(){
+    public void addObjective() throws DataBaseException {
         //Given
         RequestCreateObjectiveDTO request = new RequestCreateObjectiveDTO(
                 "Objetivo 1",
@@ -66,7 +67,7 @@ public class ObjectiveServiceSuccessTest {
     }
 
     @Test
-    public void updateObjective(){
+    public void updateObjective() throws DataBaseException {
         //Given
         var idObjective = UUID.randomUUID();
         RequestCreateObjectiveDTO request = new RequestCreateObjectiveDTO(
@@ -103,7 +104,7 @@ public class ObjectiveServiceSuccessTest {
     }
 
     @Test
-    public void completeObjective() throws InternalErrorException {
+    public void completeObjective() throws InternalErrorException, DataBaseException {
         //Given
         var idObjective = UUID.randomUUID();
         LocalDate date = LocalDate.now();

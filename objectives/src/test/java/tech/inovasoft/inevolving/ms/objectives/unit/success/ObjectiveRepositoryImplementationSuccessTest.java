@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.request.RequestCreateObjectiveDTO;
+import tech.inovasoft.inevolving.ms.objectives.domain.exception.DataBaseException;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Objective;
 import tech.inovasoft.inevolving.ms.objectives.repository.implementation.ObjectiveRepositoryImplementation;
 import tech.inovasoft.inevolving.ms.objectives.repository.interfaces.ObjectiveJpaRepository;
@@ -26,7 +27,7 @@ public class ObjectiveRepositoryImplementationSuccessTest {
     private ObjectiveRepositoryImplementation objectiveRepositoryImplementation;
 
     @Test
-    public void save() {
+    public void save() throws DataBaseException {
         //Given
         RequestCreateObjectiveDTO request = new RequestCreateObjectiveDTO(
                 "Objetivo 1",
