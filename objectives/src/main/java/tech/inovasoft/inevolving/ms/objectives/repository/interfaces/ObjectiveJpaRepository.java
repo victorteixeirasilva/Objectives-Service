@@ -16,6 +16,6 @@ public interface ObjectiveJpaRepository extends JpaRepository<Objective, UUID> {
     @Query("") // TODO: Criar Query JPQL
     List<Objective> findAllByIdUser(UUID idUser);
 
-
-
+    @Query("") // TODO: Criar Query JPQL
+    List<Objective> findAllByIdUserAndStatus(UUID idUser, String status);
 }
