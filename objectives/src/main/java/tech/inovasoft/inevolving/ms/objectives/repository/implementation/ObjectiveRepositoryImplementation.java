@@ -31,7 +31,6 @@ public class ObjectiveRepositoryImplementation implements ObjectiveRepository {
 
     @Override
     public Objective findByIdAndIdUser(UUID idObjective, UUID idUser) {
-        //TODO: Desenvolver Teste Que Falhe.
         //TODO: Desenvolver Método para o teste passar.
         //TODO: Refatorar Código.
         return null;
