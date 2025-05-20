@@ -2,6 +2,7 @@ package tech.inovasoft.inevolving.ms.objectives.repository.interfaces;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Objective;
 
 import java.util.List;
@@ -10,12 +11,18 @@ import java.util.UUID;
 
 public interface ObjectiveJpaRepository extends JpaRepository<Objective, UUID> {
 
-    @Query("") // TODO: Criar Query JPQL
-    Optional<Objective> findByIdAndIdUser(UUID idObjective, UUID idUser);
+    @Query("SELECT o FROM Objective o WHERE o.id = :idObjective AND o.idUser = :idUser")
+    Optional<Objective> findByIdAndIdUser(
+            @Param("idObjective") UUID idObjective,
+            @Param("idUser") UUID idUser
+    );
 
-    @Query("") // TODO: Criar Query JPQL
-    List<Objective> findAllByIdUser(UUID idUser);
+    @Query("SELECT o FROM Objective o WHERE o.idUser = :idUser")
+    List<Objective> findAllByIdUser(@Param("idUser") UUID idUser);
 
-    @Query("") // TODO: Criar Query JPQL
-    List<Objective> findAllByIdUserAndStatus(UUID idUser, String status);
+    @Query("SELECT o FROM Objective o WHERE o.idUser = :idUser AND o.status = :status")
+    List<Objective> findAllByIdUserAndStatus(
+            @Param("idUser") UUID idUser,
+            @Param("status") String status
+    );
 }
