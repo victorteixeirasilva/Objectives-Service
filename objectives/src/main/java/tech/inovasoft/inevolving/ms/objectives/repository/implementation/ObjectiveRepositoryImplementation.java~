@@ -82,6 +82,7 @@ public class ObjectiveRepositoryImplementation implements ObjectiveRepository {
         try {
             return objectiveJpaRepository.findAllByIdUserAndStatus(idUser, status);
         } catch (Exception e) {
+            //TODO: TESTE
             throw new DataBaseException("(findAllByIdUserAndStatus)");
         }
     }
