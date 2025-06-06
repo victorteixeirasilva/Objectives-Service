@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.request.RequestCreateObjectiveDTO;
+import tech.inovasoft.inevolving.ms.objectives.domain.dto.response.ResponseMessageDTO;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.DataBaseException;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.InternalErrorException;
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUser;
@@ -16,6 +17,7 @@ import tech.inovasoft.inevolving.ms.objectives.domain.model.Status;
 import tech.inovasoft.inevolving.ms.objectives.service.ObjectivesService;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -33,11 +35,12 @@ public class ObjectivesController {
     )
     @Async("asyncExecutor")
     @PostMapping
-    public CompletableFuture<ResponseEntity> add(
+    public CompletableFuture<ResponseEntity<Objective>> add(
             @RequestBody RequestCreateObjectiveDTO dto
     ) throws DataBaseException {
-        return CompletableFuture.completedFuture(
-                ResponseEntity.ok(objectivesService.addObjective(dto)));
+        return CompletableFuture.completedFuture(ResponseEntity.ok(
+                objectivesService.addObjective(dto)
+        ));
     }
 
     @Operation(
@@ -46,14 +49,14 @@ public class ObjectivesController {
     )
     @Async("asyncExecutor")
     @PutMapping("/{idObjective}/{idUser}")
-    public CompletableFuture<ResponseEntity> update(
+    public CompletableFuture<ResponseEntity<Objective>> update(
             @PathVariable UUID idObjective,
             @PathVariable UUID idUser,
             @RequestBody RequestCreateObjectiveDTO dto
     ) throws DataBaseException, NotFoundObjectivesByUser {
-        return CompletableFuture.completedFuture(
-                ResponseEntity.ok(
-                        objectivesService.updateObjective(idObjective, dto, idUser)));
+        return CompletableFuture.completedFuture(ResponseEntity.ok(
+                        objectivesService.updateObjective(idObjective, dto, idUser)
+        ));
     }
 
     @Operation(
@@ -62,14 +65,14 @@ public class ObjectivesController {
     )
     @Async("asyncExecutor")
     @PatchMapping("/{idObjective}/{conclusionDate}/{idUser}")
-    public CompletableFuture<ResponseEntity> completeObjective(
+    public CompletableFuture<ResponseEntity<ResponseMessageDTO>> completeObjective(
             @PathVariable UUID idObjective,
             @PathVariable LocalDate conclusionDate,
             @PathVariable UUID idUser
     ) throws InternalErrorException, DataBaseException, NotFoundObjectivesByUser {
-        return CompletableFuture.completedFuture(
-                ResponseEntity.ok(
-                        objectivesService.completeObjective(idObjective, conclusionDate, idUser)));
+        return CompletableFuture.completedFuture(ResponseEntity.ok(
+                        objectivesService.completeObjective(idObjective, conclusionDate, idUser)
+        ));
     }
 
     @Operation(
@@ -78,13 +81,13 @@ public class ObjectivesController {
     )
     @Async("asyncExecutor")
     @GetMapping("/{idObjective}/{idUser}")
-    public CompletableFuture<ResponseEntity> getObjectiveById(
+    public CompletableFuture<ResponseEntity<Objective>> getObjectiveById(
             @PathVariable UUID idObjective,
             @PathVariable UUID idUser
     ) throws DataBaseException, NotFoundObjectivesByUser {
-        return CompletableFuture.completedFuture(
-                ResponseEntity.ok(
-                        objectivesService.getObjectiveById(idObjective, idUser)));
+        return CompletableFuture.completedFuture(ResponseEntity.ok(
+                        objectivesService.getObjectiveById(idObjective, idUser)
+        ));
     }
 
     @Operation(
@@ -93,12 +96,12 @@ public class ObjectivesController {
     )
     @Async("asyncExecutor")
     @GetMapping("/user/{idUser}")
-    public CompletableFuture<ResponseEntity> getObjectivesByIdUser(
+    public CompletableFuture<ResponseEntity<List<Objective>>> getObjectivesByIdUser(
             @PathVariable UUID idUser
     ) throws NotFoundObjectivesByUser, DataBaseException {
-        return CompletableFuture.completedFuture(
-                ResponseEntity.ok(
-                        objectivesService.getObjectivesByIdUser(idUser)));
+        return CompletableFuture.completedFuture(ResponseEntity.ok(
+                        objectivesService.getObjectivesByIdUser(idUser)
+        ));
     }
 
     @Operation(
@@ -107,12 +110,12 @@ public class ObjectivesController {
     )
     @Async("asyncExecutor")
     @GetMapping("/status/todo/user/{idUser}")
-    public CompletableFuture<ResponseEntity> getObjectivesByIdUserToDo(
+    public CompletableFuture<ResponseEntity<List<Objective>>> getObjectivesByIdUserToDo(
             @PathVariable UUID idUser
     ) throws NotFoundObjectivesByUserAndStatus, DataBaseException {
-        return CompletableFuture.completedFuture(
-                ResponseEntity.ok(
-                        objectivesService.getObjectivesByIdUserStatus(idUser, Status.TODO)));
+        return CompletableFuture.completedFuture(ResponseEntity.ok(
+                        objectivesService.getObjectivesByIdUserStatus(idUser, Status.TODO)
+        ));
     }
 
     @Operation(
@@ -121,12 +124,12 @@ public class ObjectivesController {
     )
     @Async("asyncExecutor")
     @GetMapping("/status/done/user/{idUser}")
-    public CompletableFuture<ResponseEntity> getObjectivesByIdUserDone(
+    public CompletableFuture<ResponseEntity<List<Objective>>> getObjectivesByIdUserDone(
             @PathVariable UUID idUser
     ) throws NotFoundObjectivesByUserAndStatus, DataBaseException {
-        return CompletableFuture.completedFuture(
-                ResponseEntity.ok(
-                        objectivesService.getObjectivesByIdUserStatus(idUser, Status.DONE)));
+        return CompletableFuture.completedFuture(ResponseEntity.ok(
+                        objectivesService.getObjectivesByIdUserStatus(idUser, Status.DONE)
+        ));
     }
 
 }

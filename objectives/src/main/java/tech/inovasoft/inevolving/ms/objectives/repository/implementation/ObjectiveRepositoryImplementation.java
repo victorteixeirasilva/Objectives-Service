@@ -43,7 +43,10 @@ public class ObjectiveRepositoryImplementation implements ObjectiveRepository {
      * @throws NotFoundObjectivesByUser - If the objective is not found. | Se o objetivo não for encontrado.
      */
     @Override
-    public Objective findByIdAndIdUser(UUID idObjective, UUID idUser) throws DataBaseException, NotFoundObjectivesByUser {
+    public Objective findByIdAndIdUser(
+            UUID idObjective,
+            UUID idUser
+    ) throws DataBaseException, NotFoundObjectivesByUser {
         Optional<Objective> objective;
         try {
             objective = objectiveJpaRepository.findByIdAndIdUser(idObjective, idUser);
@@ -65,7 +68,9 @@ public class ObjectiveRepositoryImplementation implements ObjectiveRepository {
      * @throws DataBaseException - If there is an error finding the objectives. | Se houver algum erro ao encontrar os objetivos.
      */
     @Override
-    public List<Objective> findAllByIdUser(UUID idUser) throws DataBaseException {
+    public List<Objective> findAllByIdUser(
+            UUID idUser
+    ) throws DataBaseException {
         try {
             return objectiveJpaRepository.findAllByIdUser(idUser);
         } catch (Exception e) {
@@ -81,7 +86,10 @@ public class ObjectiveRepositoryImplementation implements ObjectiveRepository {
      * @throws DataBaseException - If there is an error finding the objectives. | Se houver algum erro ao encontrar os objetivos.
      */
     @Override
-    public List<Objective> findAllByIdUserAndStatus(UUID idUser, String status) throws DataBaseException {
+    public List<Objective> findAllByIdUserAndStatus(
+            UUID idUser,
+            String status
+    ) throws DataBaseException {
         try {
             return objectiveJpaRepository.findAllByIdUserAndStatus(idUser, status);
         } catch (Exception e) {

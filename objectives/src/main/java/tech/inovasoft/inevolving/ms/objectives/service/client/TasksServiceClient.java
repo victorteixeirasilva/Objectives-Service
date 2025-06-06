@@ -11,11 +11,13 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 @Service
-@FeignClient(name = "tasks-service", url = "http://localhost:8081/ms/tasks")
+@FeignClient(name = "tasks-service", url = "http://localhost:8081/ms/tasks") //TODO: Mudar para o endereço do container e esconder ele em variaveis de ambiente
 public interface TasksServiceClient {
 
+    // TODO: Fazer teste de integração.
     @DeleteMapping("/lock/{completionDate}/{idUser}/{idObjective}")
-    public ResponseEntity lockTaskByObjective(
+    ResponseEntity lockTaskByObjective(
+            // TODO: Desenvolver DTO dos dados recebidos, e preencher o ResponseEntity
             @PathVariable Date completionDate,
             @PathVariable UUID idUser,
             @PathVariable UUID idObjective

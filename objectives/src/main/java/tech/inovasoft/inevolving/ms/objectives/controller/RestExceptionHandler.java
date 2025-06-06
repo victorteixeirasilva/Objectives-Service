@@ -14,7 +14,7 @@ import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectiv
 public class RestExceptionHandler {
 
     @ExceptionHandler(DataBaseException.class)
-    public ResponseEntity handleDataBaseException(DataBaseException exception) {
+    public ResponseEntity<ExceptionResponse> handleDataBaseException(DataBaseException exception) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ExceptionResponse(
@@ -24,7 +24,7 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(NotFoundObjectivesByUser.class)
-    public ResponseEntity handleNotFoundObjectivesByUser(
+    public ResponseEntity<ExceptionResponse> handleNotFoundObjectivesByUser(
             NotFoundObjectivesByUser exception
     ) {
         return ResponseEntity
@@ -36,7 +36,7 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(InternalErrorException.class)
-    public ResponseEntity handleInternalErrorException(InternalErrorException exception) {
+    public ResponseEntity<ExceptionResponse> handleInternalErrorException(InternalErrorException exception) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ExceptionResponse(
@@ -46,7 +46,7 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(NotFoundObjectivesByUserAndStatus.class)
-    public ResponseEntity handleNotFoundObjectivesByUserAndStatus(
+    public ResponseEntity<ExceptionResponse> handleNotFoundObjectivesByUserAndStatus(
             NotFoundObjectivesByUserAndStatus exception
     ) {
         return ResponseEntity
