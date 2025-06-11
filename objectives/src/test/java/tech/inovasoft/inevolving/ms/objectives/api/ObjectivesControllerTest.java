@@ -200,7 +200,32 @@ public class ObjectivesControllerTest {
 
     @Test
     public void getObjectivesByIdUserDone_ok() {
-        //TODO: Desenvolver teste do End-Point
+        UUID idUser = UUID.randomUUID();
+
+        for (int i = 1; i <= 3; i++){
+            add(idUser);
+        }
+
+        for (int i = 1; i <= 3; i++){
+            UUID idObjective = add(idUser);
+            completeObjective(idObjective, idUser);
+        }
+
+        RequestSpecification requestSpecification = given()
+                .contentType(ContentType.JSON);
+
+        String url = "http://localhost:"+port+"/ms/objectives/status/done/user/"+idUser;
+
+        ValidatableResponse response = requestSpecification
+                .when()
+                .get(url)
+                .then();
+
+        response.assertThat().statusCode(200);
+
+        List<Objective> objectiveList = response.extract().body().jsonPath().get();
+
+        Assertions.assertEquals(3, objectiveList.size());
     }
 
 }
