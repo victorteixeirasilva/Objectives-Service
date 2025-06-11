@@ -1,10 +1,20 @@
 package tech.inovasoft.inevolving.ms.objectives.api;
 
+import io.restassured.http.ContentType;
+import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import tech.inovasoft.inevolving.ms.objectives.domain.dto.request.RequestCreateObjectiveDTO;
+
+import java.util.UUID;
+
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -13,9 +23,25 @@ public class ObjectivesControllerTest {
     @LocalServerPort
     private int port;
 
+    private static final UUID idUser = UUID.randomUUID();
+
     @Test
     public void add_ok() {
-        //TODO: Desenvolver teste do End-Point
+        RequestSpecification requestSpecification = given()
+                .contentType(ContentType.JSON);
+
+        ValidatableResponse response = requestSpecification
+                .body(new RequestCreateObjectiveDTO(
+                        "Name Objective",
+                        "Description Objective",
+                        idUser
+                ))
+                .when()
+                .post("http://localhost:" + port + "/ms/objectives")
+                .then();
+
+        response.assertThat().statusCode(200).and()
+                .body("id", notNullValue());
     }
 
     @Test
