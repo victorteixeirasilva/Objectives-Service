@@ -155,7 +155,47 @@ public class ObjectivesControllerTest {
 
     @Test
     public void getObjectivesByIdUserToDo_ok() {
-        //TODO: Desenvolver teste do End-Point
+        UUID idUser = UUID.randomUUID();
+
+        for (int i = 1; i <= 3; i++){
+            add(idUser);
+        }
+
+        for (int i = 1; i <= 3; i++){
+            UUID idObjective = add(idUser);
+            completeObjective(idObjective, idUser);
+        }
+
+        RequestSpecification requestSpecification = given()
+                .contentType(ContentType.JSON);
+
+        String url = "http://localhost:"+port+"/ms/objectives/status/todo/user/"+idUser;
+
+        ValidatableResponse response = requestSpecification
+                .when()
+                .get(url)
+                .then();
+
+        response.assertThat().statusCode(200);
+
+        List<Objective> objectiveList = response.extract().body().jsonPath().get();
+
+        Assertions.assertEquals(3, objectiveList.size());
+    }
+
+    private void completeObjective(UUID idObjective, UUID idUser) {
+
+        RequestSpecification requestSpecification = given()
+                .contentType(ContentType.JSON);
+
+        String url = "http://localhost:" + port + "/ms/objectives/" + idObjective + "/" + LocalDate.now() + "/" + idUser;
+
+        ValidatableResponse response = requestSpecification
+                .when()
+                .patch(url)
+                .then();
+
+        response.assertThat().statusCode(200);
     }
 
     @Test
