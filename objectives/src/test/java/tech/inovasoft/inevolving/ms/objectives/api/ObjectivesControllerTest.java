@@ -3,14 +3,17 @@ package tech.inovasoft.inevolving.ms.objectives.api;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.request.RequestCreateObjectiveDTO;
+import tech.inovasoft.inevolving.ms.objectives.domain.model.Objective;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
@@ -127,7 +130,27 @@ public class ObjectivesControllerTest {
 
     @Test
     public void getObjectivesByIdUser_ok() {
-        //TODO: Desenvolver teste do End-Point
+        UUID idUser = UUID.randomUUID();
+
+        for (int i = 1; i <= 5; i++){
+            add(idUser);
+        }
+
+        RequestSpecification requestSpecification = given()
+                .contentType(ContentType.JSON);
+
+        String url = "http://localhost:"+port+"/ms/objectives/user/"+idUser;
+
+        ValidatableResponse response = requestSpecification
+                .when()
+                .get(url)
+                .then();
+
+        response.assertThat().statusCode(200);
+
+        List<Objective> objectiveList = response.extract().body().jsonPath().get();
+
+        Assertions.assertEquals(5, objectiveList.size());
     }
 
     @Test
