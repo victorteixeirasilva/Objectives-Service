@@ -10,6 +10,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.request.RequestCreateObjectiveDTO;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
@@ -91,7 +92,19 @@ public class ObjectivesControllerTest {
 
     @Test
     public void completeObjective_ok() {
-        //TODO: Desenvolver teste do End-Point
+        UUID idObjective = add(idUser);
+
+        RequestSpecification requestSpecification = given()
+                .contentType(ContentType.JSON);
+
+        String url = "http://localhost:" + port + "/ms/objectives/" + idObjective + "/" + LocalDate.now() + "/" + idUser;
+
+        ValidatableResponse response = requestSpecification
+                .when()
+                .patch(url)
+                .then();
+
+        response.assertThat().statusCode(200);
     }
 
     @Test
