@@ -109,7 +109,20 @@ public class ObjectivesControllerTest {
 
     @Test
     public void getObjectiveById_ok() {
-        //TODO: Desenvolver teste do End-Point
+        UUID idObjective = add(idUser);
+
+        RequestSpecification requestSpecification = given()
+                .contentType(ContentType.JSON);
+
+        String url = "http://localhost:"+port+"/ms/objectives/"+idObjective+"/"+idUser;
+
+        ValidatableResponse response = requestSpecification
+                .when()
+                .get(url)
+                .then();
+
+        response.assertThat().statusCode(200).and()
+                .body("id", equalTo(idObjective.toString()));
     }
 
     @Test
