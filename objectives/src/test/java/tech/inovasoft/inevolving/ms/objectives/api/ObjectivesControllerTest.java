@@ -44,9 +44,49 @@ public class ObjectivesControllerTest {
                 .body("id", notNullValue());
     }
 
+    private UUID add(UUID idUser) {
+        RequestSpecification requestSpecification = given()
+                .contentType(ContentType.JSON);
+
+        ValidatableResponse response = requestSpecification
+                .body(new RequestCreateObjectiveDTO(
+                        "Name Objective",
+                        "Description Objective",
+                        idUser
+                ))
+                .when()
+                .post("http://localhost:" + port + "/ms/objectives")
+                .then();
+
+        response.assertThat().statusCode(200).and()
+                .body("id", notNullValue());
+
+        return UUID.fromString(response.extract().body().jsonPath().get("id"));
+    }
+
     @Test
     public void update_ok() {
-        //TODO: Desenvolver teste do End-Point
+
+        UUID idObjective = add(idUser);
+
+        RequestSpecification requestSpecification = given()
+                .contentType(ContentType.JSON);
+
+        ValidatableResponse response = requestSpecification
+                .body(new RequestCreateObjectiveDTO(
+                        "Update Name Objective",
+                        "Update Description Objective",
+                        idUser
+                ))
+                .when()
+                .put("http://localhost:" + port + "/ms/objectives/" + idObjective + "/" + idUser)
+                .then();
+
+        response.assertThat().statusCode(200).and()
+                .body("id", equalTo(idObjective.toString())).and()
+                .body("nameObjective", equalTo("Update Name Objective")).and()
+                .body("descriptionObjective", equalTo("Update Description Objective")).and()
+                .body("idUser", equalTo(idUser.toString()));
     }
 
     @Test
