@@ -96,7 +96,7 @@ public class ObjectivesController {
     )
     @Async("asyncExecutor")
     @GetMapping("/user/{idUser}")
-    public CompletableFuture<ResponseEntity<List<Objective>>> getObjectivesByIdUser(
+    public CompletableFuture<ResponseEntity<List<Objective>>>  getObjectivesByIdUser(
             @PathVariable UUID idUser
     ) throws NotFoundObjectivesByUser, DataBaseException {
         return CompletableFuture.completedFuture(ResponseEntity.ok(
