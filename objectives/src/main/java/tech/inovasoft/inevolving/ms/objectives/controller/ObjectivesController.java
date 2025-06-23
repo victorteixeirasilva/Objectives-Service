@@ -64,7 +64,7 @@ public class ObjectivesController {
             description = "Returns confirmation that the objective has been completed. | Retorna a confirmação de que o objetivo foi concluido."
     )
     @Async("asyncExecutor")
-    @PatchMapping("/{idObjective}/{conclusionDate}/{idUser}")
+    @PutMapping("/{idObjective}/{conclusionDate}/{idUser}")
     public CompletableFuture<ResponseEntity<ResponseMessageDTO>> completeObjective(
             @PathVariable UUID idObjective,
             @PathVariable LocalDate conclusionDate,
