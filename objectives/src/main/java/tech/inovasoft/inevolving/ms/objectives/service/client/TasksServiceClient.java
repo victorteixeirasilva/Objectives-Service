@@ -12,7 +12,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 @Service
-@FeignClient(name = "tasks-service", url = "http://localhost:8085/ms/tasks")
+@FeignClient(name = "tasks-service", url = "${inevolving.uri.ms.task}")
 public interface TasksServiceClient {
 
     @DeleteMapping("/lock/{completionDate}/{idUser}/{idObjective}")
