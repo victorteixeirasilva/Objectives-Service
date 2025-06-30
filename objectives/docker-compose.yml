@@ -1,0 +1,13 @@
+services:
+  objectives-service:
+    build:
+      context: .
+    container_name: objectives-service
+#    ports:
+#      - "8088:8088"
+    networks:
+      - backend
+
+networks:
+  backend:
+    external: true
