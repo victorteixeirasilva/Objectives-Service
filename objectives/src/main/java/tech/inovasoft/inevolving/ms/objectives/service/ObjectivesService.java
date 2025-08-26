@@ -1,6 +1,8 @@
 package tech.inovasoft.inevolving.ms.objectives.service;
 
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.request.RequestCreateObjectiveDTO;
 import tech.inovasoft.inevolving.ms.objectives.domain.dto.response.ResponseMessageDTO;
@@ -10,11 +12,14 @@ import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectiv
 import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectivesByUserAndStatus;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Objective;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Status;
+import tech.inovasoft.inevolving.ms.objectives.repository.interfaces.ObjectiveJpaRepository;
 import tech.inovasoft.inevolving.ms.objectives.repository.interfaces.ObjectiveRepository;
+import tech.inovasoft.inevolving.ms.objectives.service.client.Task;
 import tech.inovasoft.inevolving.ms.objectives.service.client.TasksServiceClient;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +31,9 @@ public class ObjectivesService {
 
     @Autowired
     private TasksServiceClient tasksService;
+
+    @Autowired
+    private ObjectiveJpaRepository objectiveJpaRepository;
 
     /**
      * @description - Add a new objective | Adiciona um novo objetivo
@@ -63,9 +71,15 @@ public class ObjectivesService {
     public ResponseMessageDTO completeObjective(UUID idObjective, LocalDate conclusionDate, UUID idUser) throws InternalErrorException, DataBaseException, NotFoundObjectivesByUser {
         Objective objective = objectiveRepository.findByIdAndIdUser(idObjective, idUser);
 
-        var response = tasksService.lockTaskByObjective(Date.valueOf(conclusionDate), idUser,idObjective);
+        ResponseEntity<ResponseMessageDTO> response;
 
-        if (response.getStatusCode().is2xxSuccessful()) {
+        try {
+            response = tasksService.lockTaskByObjective(Date.valueOf(conclusionDate), idUser,idObjective);
+        } catch (Exception e) {
+            response = null;
+        }
+
+        if (response != null && response.getStatusCode().is2xxSuccessful()) {
 
             objective.setCompletionDate(Date.valueOf(conclusionDate));
             objective.setStatusObjective(Status.DONE);
@@ -120,5 +134,27 @@ public class ObjectivesService {
         }
 
         return objectives;
+    }
+
+    public ResponseMessageDTO removeObjectiveById(UUID idObjective, UUID idUser) throws DataBaseException, NotFoundObjectivesByUser {
+        Objective objective = getObjectiveById(idObjective, idUser);
+
+        List<Task> taskList;
+        try {
+            ResponseEntity<List<Task>> ResponseTaskList = tasksService.getTasksByObjectiveId(idUser, idObjective);
+            taskList = ResponseTaskList.getBody();
+        } catch (FeignException.NotFound e) {
+            taskList = new ArrayList<>();
+        }
+
+        if (!taskList.isEmpty()){
+            for (Task task : taskList) {
+                tasksService.deleteTask(idUser, task.id());
+            }
+        }
+
+        objectiveJpaRepository.deleteById(objective.getId());
+
+        return new ResponseMessageDTO("Objective successfully removed");
     }
 }

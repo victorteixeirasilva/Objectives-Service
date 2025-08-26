@@ -132,4 +132,17 @@ public class ObjectivesController {
         ));
     }
 
+
+    @Operation()
+    @Async("asyncExecutor")
+    @DeleteMapping("/{idObjective}/{idUser}")
+    public CompletableFuture<ResponseEntity<ResponseMessageDTO>> removeObjectiveById(
+            @PathVariable UUID idObjective,
+            @PathVariable UUID idUser
+    ) throws DataBaseException, NotFoundObjectivesByUser {
+        return CompletableFuture.completedFuture(ResponseEntity.ok(
+                objectivesService.removeObjectiveById(idObjective, idUser)
+        ));
+    }
+
 }
