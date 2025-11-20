@@ -17,23 +17,26 @@ import java.util.concurrent.CompletableFuture;
 @FeignClient(name = "tasks-service", url = "${inevolving.uri.ms.task}")
 public interface TasksServiceClient {
 
-    @DeleteMapping("/lock/{completionDate}/{idUser}/{idObjective}")
+    @DeleteMapping("/lock/{completionDate}/{idUser}/{idObjective}/{token}")
     ResponseEntity<ResponseMessageDTO> lockTaskByObjective(
             @PathVariable Date completionDate,
             @PathVariable UUID idUser,
-            @PathVariable UUID idObjective
+            @PathVariable UUID idObjective,
+            @PathVariable String token
     );
 
-    @DeleteMapping("/{idUser}/{idTask}")
+    @DeleteMapping("/{idUser}/{idTask}/{token}")
     ResponseEntity<ResponseMessageDTO> deleteTask(
             @PathVariable UUID idUser,
-            @PathVariable UUID idTask
+            @PathVariable UUID idTask,
+            @PathVariable String token
     );
 
-    @GetMapping("/objective/{idUser}/{idObjective}")
+    @GetMapping("/objective/{idUser}/{idObjective}/{token} ")
     ResponseEntity<List<Task>> getTasksByObjectiveId(
             @PathVariable UUID idUser,
-            @PathVariable UUID idObjective
+            @PathVariable UUID idObjective,
+            @PathVariable String token
     );
 
 }

@@ -3,6 +3,7 @@ package tech.inovasoft.inevolving.ms.objectives.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,8 @@ import tech.inovasoft.inevolving.ms.objectives.domain.exception.NotFoundObjectiv
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Objective;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Status;
 import tech.inovasoft.inevolving.ms.objectives.service.ObjectivesService;
+import tech.inovasoft.inevolving.ms.objectives.service.client.Auth_For_MService.TokenService;
+import tech.inovasoft.inevolving.ms.objectives.service.client.Auth_For_MService.dto.TokenValidateResponse;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,15 +32,36 @@ public class ObjectivesController {
     @Autowired
     private ObjectivesService objectivesService;
 
+    @Autowired
+    private TokenService tokenService;
+
     @Operation(
             summary = "Add a new objective | Adicionar um novo objetivo",
             description = "Returns the registered objective. | Retorna o objetivo cadastrado."
     )
     @Async("asyncExecutor")
-    @PostMapping
+    @PostMapping("/{token}")
     public CompletableFuture<ResponseEntity<Objective>> add(
-            @RequestBody RequestCreateObjectiveDTO dto
+            @RequestBody RequestCreateObjectiveDTO dto,
+            @PathVariable String token
     ) throws DataBaseException {
+        TokenValidateResponse tokenValidateResponse = null;
+
+        try {
+            tokenValidateResponse = tokenService.validateToken(token);
+            if (tokenValidateResponse == null) {
+                return CompletableFuture.completedFuture(ResponseEntity.status(
+                        HttpStatus.UNAUTHORIZED
+                ).build());
+            }
+        } catch (Exception e) {
+            if (e.getMessage().equals("Invalid token")) {
+                return CompletableFuture.completedFuture(ResponseEntity.status(
+                        HttpStatus.UNAUTHORIZED
+                ).build());
+            }
+        }
+
         return CompletableFuture.completedFuture(ResponseEntity.ok(
                 objectivesService.addObjective(dto)
         ));
@@ -48,12 +72,30 @@ public class ObjectivesController {
             description = "Returns the updated objective. | Retorna o objetivo atualizado."
     )
     @Async("asyncExecutor")
-    @PutMapping("/{idObjective}/{idUser}")
+    @PutMapping("/{idObjective}/{idUser}/{token}")
     public CompletableFuture<ResponseEntity<Objective>> update(
             @PathVariable UUID idObjective,
             @PathVariable UUID idUser,
-            @RequestBody RequestCreateObjectiveDTO dto
+            @RequestBody RequestCreateObjectiveDTO dto,
+            @PathVariable String token
     ) throws DataBaseException, NotFoundObjectivesByUser {
+        TokenValidateResponse tokenValidateResponse = null;
+
+        try {
+            tokenValidateResponse = tokenService.validateToken(token);
+            if (tokenValidateResponse == null) {
+                return CompletableFuture.completedFuture(ResponseEntity.status(
+                        HttpStatus.UNAUTHORIZED
+                ).build());
+            }
+        } catch (Exception e) {
+            if (e.getMessage().equals("Invalid token")) {
+                return CompletableFuture.completedFuture(ResponseEntity.status(
+                        HttpStatus.UNAUTHORIZED
+                ).build());
+            }
+        }
+
         return CompletableFuture.completedFuture(ResponseEntity.ok(
                         objectivesService.updateObjective(idObjective, dto, idUser)
         ));
@@ -64,12 +106,30 @@ public class ObjectivesController {
             description = "Returns confirmation that the objective has been completed. | Retorna a confirmação de que o objetivo foi concluido."
     )
     @Async("asyncExecutor")
-    @PutMapping("/{idObjective}/{conclusionDate}/{idUser}")
+    @PutMapping("/{idObjective}/{conclusionDate}/{idUser}/{token}")
     public CompletableFuture<ResponseEntity<ResponseMessageDTO>> completeObjective(
             @PathVariable UUID idObjective,
             @PathVariable LocalDate conclusionDate,
-            @PathVariable UUID idUser
+            @PathVariable UUID idUser,
+            @PathVariable String token
     ) throws InternalErrorException, DataBaseException, NotFoundObjectivesByUser {
+        TokenValidateResponse tokenValidateResponse = null;
+
+        try {
+            tokenValidateResponse = tokenService.validateToken(token);
+            if (tokenValidateResponse == null) {
+                return CompletableFuture.completedFuture(ResponseEntity.status(
+                        HttpStatus.UNAUTHORIZED
+                ).build());
+            }
+        } catch (Exception e) {
+            if (e.getMessage().equals("Invalid token")) {
+                return CompletableFuture.completedFuture(ResponseEntity.status(
+                        HttpStatus.UNAUTHORIZED
+                ).build());
+            }
+        }
+
         return CompletableFuture.completedFuture(ResponseEntity.ok(
                         objectivesService.completeObjective(idObjective, conclusionDate, idUser)
         ));
@@ -80,11 +140,29 @@ public class ObjectivesController {
             description = "Returns the found target. | Retorna o objetivo encontrado."
     )
     @Async("asyncExecutor")
-    @GetMapping("/{idObjective}/{idUser}")
+    @GetMapping("/{idObjective}/{idUser}/{token}")
     public CompletableFuture<ResponseEntity<Objective>> getObjectiveById(
             @PathVariable UUID idObjective,
-            @PathVariable UUID idUser
+            @PathVariable UUID idUser,
+            @PathVariable String token
     ) throws DataBaseException, NotFoundObjectivesByUser {
+        TokenValidateResponse tokenValidateResponse = null;
+
+        try {
+            tokenValidateResponse = tokenService.validateToken(token);
+            if (tokenValidateResponse == null) {
+                return CompletableFuture.completedFuture(ResponseEntity.status(
+                        HttpStatus.UNAUTHORIZED
+                ).build());
+            }
+        } catch (Exception e) {
+            if (e.getMessage().equals("Invalid token")) {
+                return CompletableFuture.completedFuture(ResponseEntity.status(
+                        HttpStatus.UNAUTHORIZED
+                ).build());
+            }
+        }
+
         return CompletableFuture.completedFuture(ResponseEntity.ok(
                         objectivesService.getObjectiveById(idObjective, idUser)
         ));
@@ -95,10 +173,28 @@ public class ObjectivesController {
             description = "Returns a list of all the user's goals. | Retorna uma lista com todos os objetivos do usuário."
     )
     @Async("asyncExecutor")
-    @GetMapping("/user/{idUser}")
+    @GetMapping("/user/{idUser}/{token}")
     public CompletableFuture<ResponseEntity<List<Objective>>>  getObjectivesByIdUser(
-            @PathVariable UUID idUser
+            @PathVariable UUID idUser,
+            @PathVariable String token
     ) throws NotFoundObjectivesByUser, DataBaseException {
+        TokenValidateResponse tokenValidateResponse = null;
+
+        try {
+            tokenValidateResponse = tokenService.validateToken(token);
+            if (tokenValidateResponse == null) {
+                return CompletableFuture.completedFuture(ResponseEntity.status(
+                        HttpStatus.UNAUTHORIZED
+                ).build());
+            }
+        } catch (Exception e) {
+            if (e.getMessage().equals("Invalid token")) {
+                return CompletableFuture.completedFuture(ResponseEntity.status(
+                        HttpStatus.UNAUTHORIZED
+                ).build());
+            }
+        }
+
         return CompletableFuture.completedFuture(ResponseEntity.ok(
                         objectivesService.getObjectivesByIdUser(idUser)
         ));
@@ -109,10 +205,28 @@ public class ObjectivesController {
             description = "Returns a list of all the user's uncompleted goals. | Retorna uma lista com todos os objetivos não concluídos do usuário."
     )
     @Async("asyncExecutor")
-    @GetMapping("/status/todo/user/{idUser}")
+    @GetMapping("/status/todo/user/{idUser}/{token}")
     public CompletableFuture<ResponseEntity<List<Objective>>> getObjectivesByIdUserToDo(
-            @PathVariable UUID idUser
+            @PathVariable UUID idUser,
+            @PathVariable String token
     ) throws NotFoundObjectivesByUserAndStatus, DataBaseException {
+        TokenValidateResponse tokenValidateResponse = null;
+
+        try {
+            tokenValidateResponse = tokenService.validateToken(token);
+            if (tokenValidateResponse == null) {
+                return CompletableFuture.completedFuture(ResponseEntity.status(
+                        HttpStatus.UNAUTHORIZED
+                ).build());
+            }
+        } catch (Exception e) {
+            if (e.getMessage().equals("Invalid token")) {
+                return CompletableFuture.completedFuture(ResponseEntity.status(
+                        HttpStatus.UNAUTHORIZED
+                ).build());
+            }
+        }
+
         return CompletableFuture.completedFuture(ResponseEntity.ok(
                         objectivesService.getObjectivesByIdUserStatus(idUser, Status.TODO)
         ));
@@ -123,10 +237,28 @@ public class ObjectivesController {
             description = "Returns a list of all completed goals for the user. | Retorna uma lista com todos os objetivos concluídos do usuário."
     )
     @Async("asyncExecutor")
-    @GetMapping("/status/done/user/{idUser}")
+    @GetMapping("/status/done/user/{idUser}/{token}")
     public CompletableFuture<ResponseEntity<List<Objective>>> getObjectivesByIdUserDone(
-            @PathVariable UUID idUser
+            @PathVariable UUID idUser,
+            @PathVariable String token
     ) throws NotFoundObjectivesByUserAndStatus, DataBaseException {
+        TokenValidateResponse tokenValidateResponse = null;
+
+        try {
+            tokenValidateResponse = tokenService.validateToken(token);
+            if (tokenValidateResponse == null) {
+                return CompletableFuture.completedFuture(ResponseEntity.status(
+                        HttpStatus.UNAUTHORIZED
+                ).build());
+            }
+        } catch (Exception e) {
+            if (e.getMessage().equals("Invalid token")) {
+                return CompletableFuture.completedFuture(ResponseEntity.status(
+                        HttpStatus.UNAUTHORIZED
+                ).build());
+            }
+        }
+
         return CompletableFuture.completedFuture(ResponseEntity.ok(
                         objectivesService.getObjectivesByIdUserStatus(idUser, Status.DONE)
         ));
@@ -135,11 +267,29 @@ public class ObjectivesController {
 
     @Operation()
     @Async("asyncExecutor")
-    @DeleteMapping("/{idObjective}/{idUser}")
+    @DeleteMapping("/{idObjective}/{idUser}/{token}")
     public CompletableFuture<ResponseEntity<ResponseMessageDTO>> removeObjectiveById(
             @PathVariable UUID idObjective,
-            @PathVariable UUID idUser
+            @PathVariable UUID idUser,
+            @PathVariable String token
     ) throws DataBaseException, NotFoundObjectivesByUser {
+        TokenValidateResponse tokenValidateResponse = null;
+
+        try {
+            tokenValidateResponse = tokenService.validateToken(token);
+            if (tokenValidateResponse == null) {
+                return CompletableFuture.completedFuture(ResponseEntity.status(
+                        HttpStatus.UNAUTHORIZED
+                ).build());
+            }
+        } catch (Exception e) {
+            if (e.getMessage().equals("Invalid token")) {
+                return CompletableFuture.completedFuture(ResponseEntity.status(
+                        HttpStatus.UNAUTHORIZED
+                ).build());
+            }
+        }
+
         return CompletableFuture.completedFuture(ResponseEntity.ok(
                 objectivesService.removeObjectiveById(idObjective, idUser)
         ));
