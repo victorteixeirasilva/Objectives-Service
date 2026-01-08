@@ -47,7 +47,7 @@ jobs:
             rm -rf "$TARGET_DIR/objectives"
             mkdir -p "$TARGET_DIR"
             tar -xvf /tmp/objectives.tar -C "$TARGET_DIR"
-            rm /tmp/motivation.tar
+            rm /tmp/objectives.tar
       
             cd "$TARGET_DIR/objectives"
             docker-compose down --volumes --remove-orphans
