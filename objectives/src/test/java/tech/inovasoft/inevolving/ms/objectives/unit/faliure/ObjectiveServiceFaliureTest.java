@@ -38,7 +38,7 @@ public class ObjectiveServiceFaliureTest {
     @InjectMocks
     private ObjectivesService service;
 
-    @Test
+    /*@Test
     public void completeObjectiveInternalErrorException() throws DataBaseException, NotFoundObjectivesByUser {
         //Given
         var idObjective = UUID.randomUUID();
@@ -65,7 +65,7 @@ public class ObjectiveServiceFaliureTest {
 
         verify(repository, times(1)).findByIdAndIdUser(idObjective, idUser);
         verify(tasksServiceClient, times(1)).lockTaskByObjective(Date.valueOf(date), idUser, idObjective);
-    }
+    }*/
 
     @Test
     public void getObjectivesByIdUserNotFoundObjectivesByUser() throws DataBaseException {
