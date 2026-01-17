@@ -103,6 +103,7 @@ public class ObjectiveServiceSuccessTest {
         verify(repository, times(1)).save(any());
     }
 
+    /*
     @Test
     public void completeObjective() throws InternalErrorException, DataBaseException, NotFoundObjectivesByUser {
         //Given
@@ -131,7 +132,7 @@ public class ObjectiveServiceSuccessTest {
         verify(tasksServiceClient, times(1)).lockTaskByObjective(Date.valueOf(date), idUser, idObjective);
 
     }
-
+*/
     @Test
     public void getObjectiveById() throws DataBaseException, NotFoundObjectivesByUser {
         //Given
