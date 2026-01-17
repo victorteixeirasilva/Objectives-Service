@@ -14,6 +14,8 @@ import tech.inovasoft.inevolving.ms.objectives.domain.model.Objective;
 import tech.inovasoft.inevolving.ms.objectives.domain.model.Status;
 import tech.inovasoft.inevolving.ms.objectives.repository.interfaces.ObjectiveJpaRepository;
 import tech.inovasoft.inevolving.ms.objectives.repository.interfaces.ObjectiveRepository;
+import tech.inovasoft.inevolving.ms.objectives.service.client.Auth_For_MService.MicroServices;
+import tech.inovasoft.inevolving.ms.objectives.service.client.Auth_For_MService.TokenCache;
 import tech.inovasoft.inevolving.ms.objectives.service.client.Task;
 import tech.inovasoft.inevolving.ms.objectives.service.client.TasksServiceClient;
 
@@ -22,6 +24,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static tech.inovasoft.inevolving.ms.objectives.service.client.Auth_For_MService.MicroServices.TASKS_SERVICE;
 
 @Service
 public class ObjectivesService {
@@ -34,6 +38,18 @@ public class ObjectivesService {
 
     @Autowired
     private ObjectiveJpaRepository objectiveJpaRepository;
+
+    @Autowired
+    private TokenCache tokenCache;
+
+    private String cachedToken;
+
+    private String getValidTokenGateway() {
+        if (cachedToken == null) {
+            cachedToken = tokenCache.getToken(TASKS_SERVICE);
+        }
+        return cachedToken;
+    }
 
     /**
      * @description - Add a new objective | Adiciona um novo objetivo
@@ -74,7 +90,10 @@ public class ObjectivesService {
         ResponseEntity<ResponseMessageDTO> response;
 
         try {
-            response = tasksService.lockTaskByObjective(Date.valueOf(conclusionDate), idUser,idObjective);
+            response = tasksService.lockTaskByObjective(Date.valueOf(conclusionDate), idUser,idObjective, getValidTokenGateway());
+        } catch (FeignException.Unauthorized unauthorized) {
+            cachedToken = null;
+            return completeObjective(idObjective, conclusionDate, idUser);
         } catch (Exception e) {
             response = null;
         }
@@ -141,15 +160,23 @@ public class ObjectivesService {
 
         List<Task> taskList;
         try {
-            ResponseEntity<List<Task>> ResponseTaskList = tasksService.getTasksByObjectiveId(idUser, idObjective);
+            ResponseEntity<List<Task>> ResponseTaskList = tasksService.getTasksByObjectiveId(idUser, idObjective, getValidTokenGateway());
             taskList = ResponseTaskList.getBody();
+        } catch (FeignException.Unauthorized unauthorized) {
+            cachedToken = null;
+            return removeObjectiveById(idObjective, idUser);
         } catch (FeignException.NotFound e) {
             taskList = new ArrayList<>();
         }
 
         if (!taskList.isEmpty()){
             for (Task task : taskList) {
-                tasksService.deleteTask(idUser, task.id());
+                try {
+                    tasksService.deleteTask(idUser, task.id(), getValidTokenGateway());
+                } catch (FeignException.Unauthorized unauthorized) {
+                    cachedToken = null;
+                    tasksService.deleteTask(idUser, task.id(), getValidTokenGateway());
+                }
             }
         }
 
