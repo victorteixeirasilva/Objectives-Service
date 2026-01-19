@@ -32,7 +32,7 @@ public interface TasksServiceClient {
             @PathVariable String token
     );
 
-    @GetMapping("/objective/{idUser}/{idObjective}/{token} ")
+    @GetMapping("/objective/{idUser}/{idObjective}/{token}")
     ResponseEntity<List<Task>> getTasksByObjectiveId(
             @PathVariable UUID idUser,
             @PathVariable UUID idObjective,

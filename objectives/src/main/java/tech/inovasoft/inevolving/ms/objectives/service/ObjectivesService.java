@@ -167,6 +167,9 @@ public class ObjectivesService {
             return removeObjectiveById(idObjective, idUser);
         } catch (FeignException.NotFound e) {
             taskList = new ArrayList<>();
+        } catch (FeignException.InternalServerError e) {
+            objectiveJpaRepository.deleteById(objective.getId());
+            return new ResponseMessageDTO("Objective successfully removed");
         }
 
         if (!taskList.isEmpty()){
